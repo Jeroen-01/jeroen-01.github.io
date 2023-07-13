@@ -2,9 +2,9 @@
 layout: post
 cover: 'assets/images/cover1.jpg'
 navigation: True
-title: About API Orchestration
-date: 1865-11-26 10:18:00
-tags: fiction
+title: On API Orchestration
+date: 2023-07-13 17:58:00
+tags: api
 subclass: 'post tag-fiction'
 logo: 'assets/images/ghost.png'
 author: jeroen
