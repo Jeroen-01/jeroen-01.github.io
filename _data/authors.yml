@@ -1,10 +1,10 @@
 casper:
   username: casper
-  name: Casper McFadden
-  location: Maine, USA
+  name: Jeroen Douma
+  location: Frankfurt am Main, Germany
   url_full: http://jekyllt.github.io/jasper/
   url: jekyllt.github.io/jasper
-  bio: A paranormal expert and his daughter bunk in an abandoned house populated by 3 mischievous ghosts and a friendly one, Casper.
+  bio: Solution Engineer focused on Manufacturing, Automotive and Production
   assets: assets/images/casper.png
 lewis:
   username: lewis
@@ -38,11 +38,3 @@ martin:
   url: jekyllt.github.io/jasper
   bio: Pastor and Preacher
   assets: assets/images/martin.jpg
-jdouma:
-  username: jdouma
-  name: Jeroen Douma
-  location: Frankfurt am Main, Germany
-  url_full: https://linkedin.com/jeroen-douma
-  url: linkedin.com/jeroen-douma
-  bio: Solution Engineer with a focus on Manufacturing and Production
-  assets: assets/images/abraham.jpg
