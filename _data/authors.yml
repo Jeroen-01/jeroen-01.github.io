@@ -32,11 +32,11 @@ edgar:
   assets: assets/images/edgar.gif
 martin:
   username: martin
-  name: Jeroen Douma
-  location: Frankfurt am Main, Germany
+  name: Martin Luther King
+  location: Memphis, Tennessee
   url_full: http://jekyllt.github.io/jasper/
   url: jekyllt.github.io/jasper
-  bio: Solution Engineer with a focus on Manufacturing and Production
+  bio: Pastor and Preacher
   assets: assets/images/martin.jpg
 
 jdouma:
