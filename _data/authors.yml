@@ -1,4 +1,4 @@
-casper:
+jeroen:
   username: casper
   name: Jeroen Douma
   location: Frankfurt am Main, Germany
@@ -6,35 +6,3 @@ casper:
   url: jekyllt.github.io/jasper
   bio: Solution Engineer focused on Manufacturing, Automotive and Production
   assets: assets/images/casper.png
-lewis:
-  username: lewis
-  name: Lewis Carroll
-  location: Cheshire, England
-  url_full: http://jekyllt.github.io/jasper/
-  url: jekyllt.github.io/jasper
-  bio: My real name is Charles Lutwidge Dodgson, but people call me Lewis. I'm an English writer, mathematician, logician, Anglican deacon and photographer. People know me best for writing about Alice.
-  assets: assets/images/lewis.jpeg
-abraham:
-  username: abraham
-  name: Abraham Lincoln
-  location: Kentucky, USA
-  url_full: http://jekyllt.github.io/jasper/
-  url: jekyllt.github.io/jasper
-  bio: I was the 16th president of the USA until I was assassinated in April of 1963. I led the US through its Civil War - its bloodiest and greatest moral, constitutional and political crisis.
-  assets: assets/images/abraham.jpg
-edgar:
-  username: edgar
-  name: Edgar Rice Burroughs
-  location: Chicago, Illinois
-  url_full: http://jekyllt.github.io/jasper/
-  url: jekyllt.github.io/jasper
-  bio: I'm an American novelist, best known for my work writing about a brave jungle hero called Tarzan and his muse, Jane.
-  assets: assets/images/edgar.gif
-martin:
-  username: martin
-  name: Martin Luther King
-  location: Memphis, Tennessee
-  url_full: http://jekyllt.github.io/jasper/
-  url: jekyllt.github.io/jasper
-  bio: Pastor and Preacher
-  assets: assets/images/martin.jpg
