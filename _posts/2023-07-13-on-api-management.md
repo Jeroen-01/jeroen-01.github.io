@@ -1,11 +1,11 @@
 ---
 layout: post
-cover: false
-navigation: false
+cover: 'assets/images/cover3.jpg'
+navigation: True
 title: On API Management
 date: 2023-07-13 17:35:00
-tags: api management
-subclass: 'post tag-api tag-management'
+tags: test content
+subclass: 'post tag-test tag-content'
 author: jeroen
 categories: jeroen
 ---
