@@ -38,3 +38,12 @@ martin:
   url: jekyllt.github.io/jasper
   bio: Solution Engineer with a focus on Manufacturing and Production
   assets: assets/images/martin.jpg
+
+jdouma:
+  username: jdouma
+  name: Jeroen Douma
+  location: Frankfurt am Main, Germany
+  url_full: https://linkedin.com/jeroen-douma
+  url: linkedin.com/jeroen-douma
+  bio: Solution Engineer with a focus on Manufacturing and Production
+  assets: assets/images/jeroen.jpg
