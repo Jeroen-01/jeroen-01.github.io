@@ -2,9 +2,9 @@
 layout: post
 cover: 'assets/images/cover7.jpg'
 navigation: True
-title: The Businessman & the fisherman
-date: 2014-08-12 10:18:00
-tags: fables fiction
+title: On Batch Integration
+date: 2023-07-14 08:24:00
+tags: integration
 subclass: 'post tag-test tag-content'
 logo: 'assets/images/ghost.png'
 author: jeroen
