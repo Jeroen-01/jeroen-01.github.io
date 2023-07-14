@@ -4,7 +4,7 @@ cover: 'assets/images/cover1.jpg'
 navigation: True
 title: On API Orchestration
 date: 2023-07-13 17:58:00
-tags: api
+tags: marketplace
 subclass: 'post tag-fiction'
 logo: 'assets/images/ghost.png'
 author: jeroen
