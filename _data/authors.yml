@@ -1,8 +1,9 @@
 jeroen:
   username: jeroen
   name: Jeroen Douma
+  github: https://github.com/Jeroen-01
   location: Frankfurt am Main, Germany
-  url_full: http://jekyllt.github.io/jasper/
-  url: jekyllt.github.io/jasper
+  url_full: https://jeroen-01.github.io
+  linkedin: https://linkedin.com/jeroen-douma
   bio: Solution Engineer focused on Manufacturing, Automotive and Production
   assets: assets/images/casper.png
