@@ -7,8 +7,8 @@ paginate: 5
 language: 'en-uk'
 
 # Website info
-name: 'Finding The Way Home'
-description: "A beautiful narrative written with the world's most elegant publishing platform. The story begins here."
+name: 'The Integration Chronicles'
+description: "Journeying through APIs, data models, and seamless integrations"
 
 short_url: 'jeroen-01.github.io'
 google_analytics: UA-69281367-1
