@@ -2,7 +2,7 @@
 layout: post
 cover: 'assets/images/cover3.jpg'
 navigation: True
-title: Managing Global API Deployments in CloudHub 2.0
+title: Managing Global API Deployments in CloudHub
 date: 2023-08-06 12:11:45
 tags: architecture
 subclass: 'post tag-test tag-content'
@@ -12,14 +12,14 @@ categories: jeroen
 ---
 
 <p>Global organizations require global IT infrastructure to support their processes, and APIs are no exceptions to this requirement.
-In this blog post, we will show you how to configure the Anypoint Platform and AWS Route 53 to manage <em>Global API Deployments</em> running on CloudHub 2.0.</p>
+In this blog post, we will show you how to configure the Anypoint Platform and AWS Route 53 to manage <em>Global API Deployments</em> running on the MuleSoft Anypoint Platform CloudHub environment.</p>
 
 <hr />
 
 <h3>Table of Contents</h3>
 
 <h4><a href="#prerequisites">Prerequisites</a></h4>
-<h4><a href="#setting-up-aws-route-53">Setting up AWS Route 53</a></h4>
+<h4><a href="#business-requirements">Business requirements</a></h4>
 
 
 <hr />
@@ -29,12 +29,69 @@ In this blog post, we will show you how to configure the Anypoint Platform and A
     <ul>
         <li>MuleSoft Anypoint Platform</li>
 
-        You can request a free trial account by clicking <a href="https://anypoint.mulesoft.com/login/signup?apintent=generic">here</a>
+        You can request a free trial account by clicking <a href="https://anypoint.mulesoft.com/login/signup?apintent=generic">here</a>. Make sure to use a fictional username, for example including today's date, to ensure there are no clashes with existing or future usernames.
         <li>AWS Account </li>
     </ul>
 
-<h4><a name="setting-up-aws-route-53">Setting up AWS Route 53</a></h4>
+<h4><a name="business-requirements">Business requirements</a></h4>
 
+<p>We will use the following fictional company and fictional business requirements to guide us through the process.
+
+Since 2019, <strong>ACME Inc.</strong> is an avid user of the the MuleSoft Anypoint Platform for all their API, integration and API Management use cases. In June 2023, they started developing a new <em>Orders API</em>, which allows
+their customers to integrate their applications and processes directly with ACME Inc. to improve supply chain visibility. They are now looking to set up and expand the platform to allow them to
+deploy the new API on a global scale.
+
+ACME Inc. operates in three regions cq. countries:
+
+    <ul>
+        <li>Oceania: Australia</li>
+        <li>North America: Virginia</li>
+        <li>Europe: Germany</li>
+    </ul>
+
+As Australia was the first country in which the Anypoint Platform was introduced, they are already actively using an Anypoint <em>Virtual Private Cloud (VPC)</em> and
+<em>Dedicated Load Balancer (DLB)</em> to deploy their applications in this region.
+
+For the new to be added regions, i.e. North America and Europe, ACME Inc.'s API Architects are very interested in setting up Private Spaces rather than VPCs and DLBs due to the improved deployment and runtime performance,
+scalability, more fine-grained resource allocation, and overall setup simplification. Luckily, they have sufficient entitlements in their current subscription to set up 2 new Private Spaces. 
+However, there is <strong>no</strong> capacity to migrate the applications running in Australia to a Private Space, nor can they set up a separate Private Space for this region due to license availability.
+
+The <em>Order API</em> will need to be deployed as closely to the operating regions defined above, and the consuming applications will need to be routed to the API instance that is closest to them to 
+reduce geographical latency.</p>
+
+<h5>Overview of DNS Records</h5>
+
+<table>
+<tbody>
+<tr>
+<th>Record Name</th>
+<th>Type</th>
+<th>Routing Policy</th>
+<th>Differentiator</th>
+<th>Alias</th>
+<th>Value/Route traffic to</th>
+<th>TTL (seconds</th>
+<th>Health check ID</th>
+<th>Evaluate target health</th>
+<th>Record ID</th>
+</tr>
+<tr>
+<td>Division 1</td>
+<td>Division 2</td>
+<td>Division 3</td>
+</tr>
+<tr class="even">
+<td>Division 1</td>
+<td>Division 2</td>
+<td>Division 3</td>
+</tr>
+<tr>
+<td>Division 1</td>
+<td>Division 2</td>
+<td>Division 3</td>
+</tr>
+</tbody>
+</table>
 
 
 <h2 id="media">Media</h2>
@@ -86,30 +143,7 @@ In this blog post, we will show you how to configure the Anypoint Platform and A
 
 <h2 id="table">Table</h2>
 
-<table>
-<tbody>
-<tr>
-<th>Table Header 1</th>
-<th>Table Header 2</th>
-<th>Table Header 3</th>
-</tr>
-<tr>
-<td>Division 1</td>
-<td>Division 2</td>
-<td>Division 3</td>
-</tr>
-<tr class="even">
-<td>Division 1</td>
-<td>Division 2</td>
-<td>Division 3</td>
-</tr>
-<tr>
-<td>Division 1</td>
-<td>Division 2</td>
-<td>Division 3</td>
-</tr>
-</tbody>
-</table>
+
 
 <hr />
 
