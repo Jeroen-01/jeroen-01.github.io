@@ -36,13 +36,13 @@ In this blog post, we will show you how to configure the Anypoint Platform and A
 
 <h4><a name="business-requirements">Business requirements</a></h4>
 
-<p>We will use the following fictional company and fictional business requirements to guide us through the process.  
+<p>We will use the following fictional company and fictional business requirements to guide us through the process. </p>
 
-Since 2019, <strong>ACME Inc.</strong> is an avid user of the the MuleSoft Anypoint Platform for all their API, integration and API Management use cases. In June 2023, they started developing a new <em>Orders API</em>, which allows
+<p>Since 2019, <strong>ACME Inc.</strong> is an avid user of the the MuleSoft Anypoint Platform for all their API, integration and API Management use cases. In June 2023, they started developing a new <em>Orders API</em>, which allows
 their customers to integrate their applications and processes directly with ACME Inc. to improve supply chain visibility. They are now looking to set up and expand the platform to allow them to
-deploy the new API on a global scale.  
+deploy the new API on a global scale.</p>
 
-ACME Inc. operates in three regions cq. countries:  
+<p>ACME Inc. operates in three regions cq. countries:</p>
 
     <ul>
         <li>Oceania: Australia</li>
@@ -50,18 +50,17 @@ ACME Inc. operates in three regions cq. countries:
         <li>Europe: Germany</li>
     </ul>
 
-As Australia was the first country in which the Anypoint Platform was introduced, they are already actively using an Anypoint <em>Virtual Private Cloud (VPC)</em> and
-<em>Dedicated Load Balancer (DLB)</em> to deploy their applications in this region.  
+<p>As Australia was the first country in which the Anypoint Platform was introduced, they are already actively using an Anypoint <em>Virtual Private Cloud (VPC)</em> and
+<em>Dedicated Load Balancer (DLB)</em> to deploy their applications in this region.  </p>
 
-For the new to be added regions, i.e. North America and Europe, ACME Inc.'s API Architects are very interested in setting up Private Spaces rather than VPCs and DLBs due to the improved deployment and runtime performance,
+<p>For the new to be added regions, i.e. North America and Europe, ACME Inc.'s API Architects are very interested in setting up Private Spaces rather than VPCs and DLBs due to the improved deployment and runtime performance,
 scalability, more fine-grained resource allocation, and overall setup simplification. Luckily, they have sufficient entitlements in their current subscription to set up 2 new Private Spaces. 
-However, there is <strong>no</strong> capacity to migrate the applications running in Australia to a Private Space, nor can they set up a separate Private Space for this region due to license availability.  
+However, there is <strong>no</strong> capacity to migrate the applications running in Australia to a Private Space, nor can they set up a separate Private Space for this region due to license availability.</p>
 
-The <em>Order API</em> will need to be deployed as close to the operating regions defined above, and the consuming applications will need to be routed to the API instance that is closest to them to 
-reduce geographical latency.  
+<p>The <em>Order API</em> will need to be deployed as close to the operating regions defined above, and the consuming applications will need to be routed to the API instance that is closest to them to 
+reduce geographical latency.</p> 
 
-Now it's up to us to come up with a solution design.
-</p>
+<p>Now it's up to us to come up with a solution design.</p>
 
 <h4><a name="solution-design">Solution design</a></h4>
 
