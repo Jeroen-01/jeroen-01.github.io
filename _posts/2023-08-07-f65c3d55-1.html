@@ -15,6 +15,11 @@ categories: jeroen
 In Part 1 of this blog post series, we will walk through the prerequisites and fictional business requirements of <em>ACME Inc.</em> to frame our discussion.</p>
 
 <hr />
+<h4>Disclaimer</h4>
+
+<p>This blog provides general guidance and is not intended as official implementation documentation. Readers are responsible for their own implementation and associated costs. No guarantees are made regarding outcomes. The authors are not liable for any resulting damages. Use at your own discretion.</p>
+
+<hr />
 
 <h3>Table of Contents</h3>
 
@@ -30,7 +35,9 @@ In Part 1 of this blog post series, we will walk through the prerequisites and f
 
         You can request a free trial account by clicking <a href="https://anypoint.mulesoft.com/login/signup?apintent=generic">here</a>.  
         Make sure to use a fictional username, for example including today's date, to ensure there are no clashes with existing or future usernames.
-        <li>AWS Account </li>
+        <li>AWS Account with an AWS Route 53 Hosted Zone</li>
+
+        Throughout the series, we will reference to the vanity domain <em>api.acme.com</em>. If you want to recreate the steps below, you will also have to create a Hosted Zone with your own domain.
     </ul>
 
 <h4><a name="business-requirements">Business requirements</a></h4>
@@ -56,8 +63,8 @@ deploy the new API on a global scale.</p>
 scalability, more fine-grained resource allocation, and overall setup simplification. Luckily, they have sufficient entitlements in their current subscription to set up 2 new Private Spaces. 
 However, there is <strong>no</strong> capacity to migrate the applications running in Australia to a Private Space, nor can they set up a separate Private Space for this region due to license availability.</p>
 
-<p>The <em>Order API</em> will need to be deployed as close to the operating regions defined above, and the consuming applications will need to be routed to the API instance that is closest to them to 
-reduce geographical latency.</p> 
+<p>The <em>Order API</em> will need to be deployed as close to the operating regions defined above, and the consuming applications will need to be routed to the API instance that is closest to them, in order to 
+reduce geographical latency. Furthermore, ACME Inc. wants to continue using their vanity domain <em>https://api.acme.com</em>, which is already in use for the Australia region.</p> 
 
-<p>Now it's up to us to come up with a solution design.</p>
+<p>Now, it's up to us to come up with a solution design. Stay tuned for <a href="/f65c3d55-2.html">Part 2</a>!.</p>
 
