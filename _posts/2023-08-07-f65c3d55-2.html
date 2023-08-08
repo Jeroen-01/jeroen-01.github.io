@@ -12,11 +12,14 @@ categories: jeroen
 ---
 
 <p>Global organizations require global IT infrastructure to support their processes, and APIs are no exceptions to this requirement.
-In Part 2 of this blog post series, we will discuss the solution design for the business requirements discussed in <a href="/f65c3d55-1.html">Part 1</a>.</p>
+In Part 2 of this blog post series, we will discuss the solution design and the implementation steps for the business requirements discussed in <a href="/f65c3d55-1.html">Part 1</a>.</p>
 
 <hr />
+<h4>Disclaimer</h4>
 
-<h3>Table of Contents</h3>
+<p>This blog provides general guidance and is not intended as official implementation documentation. Readers are responsible for their own implementation and associated costs. No guarantees are made regarding outcomes. The authors are not liable for any resulting damages. Use at your own discretion.</p>
+
+<hr />
 
 <h5><a href="#solution-design">Solution design</a></h5>
 
@@ -29,7 +32,8 @@ After thorough analysis of the requirements and available <a href="https://docs.
 <ol>
   <li>Set up and configure a Private Space in Region <em>eu-central-1 (deu-c1)</em></li>
   <li>Set up and configure a Private Space in Region <em>us-east-1 (usa-e1)</em></li>
-with additional text</li>
+  <li>Reconfigure existing VPC and DLB in Region <em>ap-northeast-2 (au-s1)</em></li>
+  <li>Configure AWS Route 53 with required Hosted Zone, DNS Records and geolocation policies</li>
 </ol>
 
 
