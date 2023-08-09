@@ -33,13 +33,25 @@ After thorough analysis of the requirements and available <a href="https://docs.
 
 <h5>Solution design diagram</h5>
 
+<p>The diagram below shows the solution design and the components required for the implementation. Applications will (continue to) use the vanity domain <em>api.acme.com</em>, 
+  whereby Route 53 will be configured to ensure geographical routing based on the application's location.</p> 
 <p><img src="/assets/images/f65c3d55-1-diagram.png" alt="Solution design diagram" /></p>
 
-<h5>Step 1: Set up and configure Private Spaces in Anypoint Platform</h5>
+<p>Now let's get started with the implementation!</p>
 
-  <ul>
-    <li>Open <em>Runtime Manager > Private Spaces</em></li>
-  </ul>
+<h5>Setting up and configuring Private Spaces in Anypoint Platform</h5>
 
+  <ol>
+    <li>Create a Private Space in Region <em>Europe (Frankfurt)</em> by following the steps described <a href="https://docs.mulesoft.com/cloudhub-2/ps-create-configure">here</a>.</li>
 
+    The team names this Private Space <em>acme-priv-sp-deu-c1</em>.
+    <li>Create a Private Space in Region <em>US East (Northern Virginia)</em> following the same steps as above.</li>
 
+    The team names this Private Space <em>acme-priv-sp-usa-e1</em>
+  </ol>
+
+<p>The creation of the Private Spaces will run in the background and will take approximately 30 minutes to complete. 
+In the meantime, you can go and grab the <strong>Public certificate</strong> and <strong>Private Key</strong> for the domain of your choice.
+  The C4e at ACME Inc. has already gathered the needed PEM-files from their networking team to configure the Private Space with a TLS Context for <em>api.acme.com</em>.</p>
+
+  <p>As soon as the Private Spaces have been successfully completed, we can go ahead and configure the TLS Context by following the steps described <a href="https://docs.mulesoft.com/cloudhub-2/ps-config-domains#create-tls-context">here</a>.</p>
