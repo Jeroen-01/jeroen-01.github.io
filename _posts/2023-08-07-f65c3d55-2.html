@@ -26,8 +26,9 @@ In Part 2 of this blog post series, we will discuss the solution design and the 
 After thorough analysis of the requirements and available <a href="https://docs.mulesoft.com/cloudhub-2/ch2-architecture#regions-and-dns-records">CloudHub regions</a>, the ACME Inc. <em>Center for Enablement (C4E)</em> has come up with the following Action Plan.
 
 <ol>
-  <li>Set up and configure Private Spaces in Regions <em>eu-central-1 (deu-c1)</em> and <em>us-east-1 (usa-e1)</em></li>
-  <li>Reconfigure existing VPC and DLB in Region <em>ap-northeast-2 (au-s1)</em></li>
+  <li>Create and configure Private Spaces in Regions <em>eu-central-1 (deu-c1)</em> and <em>us-east-1 (usa-e1)</em></li>
+  <li>Check configuration of existing VPC and DLB in Region <em>ap-northeast-2 (au-s1)</em></li>
+  <li>Deploy <em>Orders API</em> to the three environments</li>
   <li>Configure AWS Route 53 with required DNS Records and geolocation policies</li>
 </ol>
 
@@ -39,7 +40,7 @@ After thorough analysis of the requirements and available <a href="https://docs.
 
 <p>Now let's get started with the implementation!</p>
 
-<h5>Setting up and configuring Private Spaces in Anypoint Platform</h5>
+<h5>Create Private Spaces in Anypoint Platform</h5>
 
   <ol>
     <li>Create a Private Space in Region <em>Europe (Frankfurt)</em> by following the steps described <a href="https://docs.mulesoft.com/cloudhub-2/ps-create-configure">here</a>.</li>
@@ -51,7 +52,22 @@ After thorough analysis of the requirements and available <a href="https://docs.
   </ol>
 
 <p>The creation of the Private Spaces will run in the background and will take approximately 30 minutes to complete. 
-In the meantime, you can go and grab the <strong>Public certificate</strong> and <strong>Private Key</strong> for the domain of your choice.
-  The C4e at ACME Inc. has already gathered the needed PEM-files from their networking team to configure the Private Space with a TLS Context for <em>api.acme.com</em>.</p>
 
-  <p>As soon as the Private Spaces have been successfully completed, we can go ahead and configure the TLS Context by following the steps described <a href="https://docs.mulesoft.com/cloudhub-2/ps-config-domains#create-tls-context">here</a>.</p>
+<h5>Create TLS Context</h5>
+<p>The C4e at ACME Inc. has already gathered the needed PEM-files from their networking team to configure the Private Space with a TLS Context 
+  for <em>api.acme.com</em>, which they complete by following the steps described <a href="https://docs.mulesoft.com/cloudhub-2/ps-config-domains#create-tls-context">here</a> in both Private Spaces. </p>
+
+<h5>Check configuration of existing VPC and DLB</h5>
+<p>The C4E has decided to deploy the Orders API with the application name <em>acme-inc-orders-api</em> in all environments. As this name is available and unique inside the VPC,
+  and the mapping rule inside the DLB has already been set up to forward API calls to the corresponding Mule App, no further changes are needed.</p>
+
+<h5>Deploy the <em>Orders API</em></h5>
+<p>The C4E Team goes ahead and deploys the <em>Orders API</em> to the 2 Private Spaces in Frankfurt and Northern Virginia and to the VPC in Australia, a major milestone!
+  After some sanity checks and test calls, all signs are green to go ahead with the global implementation.</p>
+
+<h5>Configure AWS Route 53</h5>
+To implement the geolocation-based routing, the team creates the following records in AWS Route 53:
+
+
+
+
