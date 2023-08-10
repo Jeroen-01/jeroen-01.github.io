@@ -138,11 +138,11 @@ td, th{ padding: 0; }
     content: "\f601";
 }
 .icon-twitter:before {
-    content: "\f602";
+    content: "\f099";
     font-size: 1.1em;
 }
 .icon-linkedin:before {
-    content: "\f472";
+    content: "\f0e1";
     font-size: 1.1em;
 }
 .icon-google-plus:before {
