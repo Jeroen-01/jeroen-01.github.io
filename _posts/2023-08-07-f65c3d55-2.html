@@ -100,11 +100,11 @@ Routing Policy: Geolocation
 Location: Europe
 Record ID: 20230810-132419</p>
 
-<p><strong>Note:</strong> it can take up to 24 hours to propagate the DNS record to all global DNS servers. To check whether the DNS record is available, you can run </p>
+<p><strong>Note:</strong> it can take up to 24 hours to propagate the DNS record to all global DNS servers. To check whether the DNS record is available, you can run <code>dig api.acme.com</code> from a Terminal.</p>
 
-<p>Effectually, the DNS Record will ensure that a call to the domain <em>api.acme.com</em> will be routed to the actual CloudHub domain where the Orders API is running, <em>if</em> the call originates from an IP Address residing in Europe.</p>
+<p>Basically, the DNS Record will ensure that a call to the domain <em>api.acme.com</em> will be routed to the CloudHub domain in Europe (Frankfurt) where the Orders API is running, <em>if</em> the call originates from an IP Address residing in Europe.</p>
 
-<p>Below provided an overview of all DNS records created to complete the implementation.</p>
+<p>Below provided an overview of all DNS records created to complete the implementation. The team also added a Record with Geolocation <em>Default</em> to ensure that calls originating from a different continent or from an non-identifiable IP Address are routed to the Orders API running in North America. </p>
 
 <table>
 <tbody>
@@ -114,23 +114,29 @@ Record ID: 20230810-132419</p>
 <th>Differentiator</th>
 <th>Value</th>
 </tr>
-<tr>
-<td>api.acme.com</td>
-<td>api.acme.com</td>
-<td>api.acme.com</td>
-</tr>
 <tr class="even">
+<td>api.acme.com</td>
 <td>Geolocation</td>
-<td>Division 2</td>
-<td>Division 3</td>
-</tr>
-<tr>
 <td>Europe</td>
-<td>Division 2</td>
-<td>Division 3</td>
+<td>xxxx.deu-c1.cloudhub.io</td>
 </tr>
 <tr>
-<td>xxxx.deu-c1.cloudhub.io</td>  
+<td>api.acme.com</td>
+<td>Geolocation</td>
+<td>North America</td>
+<td>xxxx-usa-e1.cloudhub.io</td>
+</tr>
+<tr>
+<td>api.acme.com</td>
+<td>Geolocation</td>
+<td>Oceania</td>
+<td>xxxx-usa-e1.cloudhub.io</td>
+</tr>
+<tr>
+<td>api.acme.com</td>
+<td>Geolocation</td>
+<td>Default</td>
+<td>xxxx-usa-e1.cloudhub.io</td>
 </tr>
 </tbody>
 </table>
