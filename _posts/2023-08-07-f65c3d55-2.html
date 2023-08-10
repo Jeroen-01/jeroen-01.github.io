@@ -20,6 +20,7 @@ In Part 2 of this blog post series, we will discuss the solution design and the 
 <h5><a href="#solution-design">Solution design</a></h5>
 <h6><a href="#solution-design-diagram">Solution design diagram</a></h6>
 <h5><a href="#implementation-plan">Implementation plan</a></h6>
+<h5><a href="#conclusion">Conclusion</a></h5>
 
 <hr />
 
@@ -74,11 +75,21 @@ domain <em>acme.com</em>, so in this case the team does not need to create a new
 
 <h5>Check configuration of existing VPC and DLB</h5>
 <p>The C4E has decided to deploy the Orders API with the application name <em>acme-inc-orders-api</em> in all environments. As this name is available and unique inside the VPC,
-  and the mapping rule inside the DLB has already been set up to forward API calls to the corresponding Mule App, no further changes are needed.</p>
+  and the mapping rule inside the DLB has already been set up to forward API calls to the corresponding Mule App, no further changes are needed.
+
+While they are checking the configuration in <em>Runtime Manager > Load Balancers</em>, they make note of the DLB's domain, which they need to configure the DNS Records.
+</p>
+
+<p><img src="/assets/images/f65c3d55-2-dlb.png" alt="Dedicated Load Balancer domain" /></p>
+
 
 <h5>Deploy the <em>Orders API</em></h5>
-<p>The C4E goes ahead and deploys the <em>Orders API</em> to the 2 Private Spaces in Frankfurt and Northern Virginia and to the VPC in Australia, a major milestone!
-  After some sanity checks and test calls, all signs are green to go ahead with the global implementation.</p>
+<p>The C4E goes ahead and deploys the <em>Orders API</em> to the 2 Private Spaces in Frankfurt and Northern Virginia and to the VPC in Australia, a major milestone! Since API Security is of course
+  highly important, they also created 3 APIs in API Manager and connected these to the Mule Apps using the <em>ApiId</em>, and implemented the Client ID enforcement policy. Lastly, they created an 
+  API Group in API Manager and bundled all 3 API instances in the group, so that one set of credentials can be used to access all global API instances. With this in place, they can
+  provide their customer with all the flexibility needed to call the API from any geographical location.</p> 
+
+<p>After some sanity checks and test calls, all signs are green to go ahead with the global implementation.</p>
 
 <h5>Configure AWS Route 53</h5>
 <p>Now it's time to bring it all together. The C4E collaborates with the networking team to configure AWS Route 53.</p>
@@ -100,11 +111,34 @@ Routing Policy: Geolocation
 Location: Europe
 Record ID: 20230810-132419</p>
 
-<p><strong>Note:</strong> it can take up to 24 hours to propagate the DNS record to all global DNS servers. To check whether the DNS record is available, you can run <code>dig api.acme.com</code> from a Terminal.</p>
+<p><strong>Note:</strong> it can take up to 24 hours to propagate the DNS record to all global DNS servers.</p>
+
+<p>To check whether the DNS record is available, you can run the Terminal command as shown below. The CNAME record should point to the CloudHub Public DNS Target,
+  and in turn, the A Records should correspond with the Inbound Static IPs.</p>
+
+<pre>
+  dig api.acme.com
+  
+  ; <<>> DiG 9.10.6 <<>> api.acme.com
+  ;; global options: +cmd
+  ;; Got answer:
+  ...
+
+  ;; ANSWER SECTION:
+  api.acme.com.	60	IN	CNAME	xxxx.deu-c1.cloudhub.io.
+  xxxx.deu-c1.cloudhub.io. 60	IN	A	10.0.0.1
+  xxxx.deu-c1.cloudhub.io. 60	IN	A	10.0.0.2
+  xxxx.deu-c1.cloudhub.io. 60	IN	A	10.0.0.3
+
+  ;; Query time: 83 msec
+  ;; SERVER: 100.1.2.3#53(100.1.2.3)
+  ;; WHEN: Thu Aug 10 16:36:45 CEST 2023
+  ;; MSG SIZE  rcvd: 133
+</pre>
 
 <p>Basically, the DNS Record will ensure that a call to the domain <em>api.acme.com</em> will be routed to the CloudHub domain in Europe (Frankfurt) where the Orders API is running, <em>if</em> the call originates from an IP Address residing in Europe.</p>
 
-<p>Below provided an overview of all DNS records created to complete the implementation. The team also added a Record with Geolocation <em>Default</em> to ensure that calls originating from a different continent or from an non-identifiable IP Address are routed to the Orders API running in North America. </p>
+<p>The table below provides an overview of all DNS records created to complete the implementation. The team also added a CNAME Record with Geolocation <em>Default</em> to ensure that calls originating from a different continent or from an non-identifiable IP Address are routed to the Orders API running in North America. </p>
 
 <table>
 <tbody>
@@ -130,7 +164,7 @@ Record ID: 20230810-132419</p>
 <td>api.acme.com</td>
 <td>Geolocation</td>
 <td>Oceania</td>
-<td>xxxx-usa-e1.cloudhub.io</td>
+<td>acme-inc-au-s1.lb.anypointdns.net</td>
 </tr>
 <tr>
 <td>api.acme.com</td>
@@ -141,6 +175,17 @@ Record ID: 20230810-132419</p>
 </tbody>
 </table>
 
+<h4><a name="conclusion">Conclusion</a></h4>
+
+<p>The leadership team at ACME Inc. is very impressed and happy with the solution created by the C4E, and is confident it will be of great value to their customers.
+The C4E has successfully implemented a global and scalable solution, that ensures fast response times from any geographical location, in turn providing an excellent
+customer and developer experience.</p>
+
+<p>As soon as the implementation is completed, the team notices that the operating costs on AWS Route 53 continue to increase, so they do make one small change. They decide to adjust
+the <em>Time-to-Live (TTL)</em> of each CNAME Record to 86,400 seconds (or 1 day) to increase the cache period and reduce the number of queries made by clients against the DNS Service, in turn reducing operating costs.
+It is indeed common practice to first configure the records with a short TTL, and increase it as soon as everything is configured as required.</p>
+
+<p>And there you have it: we have successfully created Private Spaces, globally deployed our Orders API and built an application network that can be reached by customers throughout the world!</p>
 
 
 
