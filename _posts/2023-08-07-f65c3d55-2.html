@@ -18,20 +18,24 @@ In Part 2 of this blog post series, we will discuss the solution design and the 
 <h3>Table of Contents</h3>
 
 <h5><a href="#solution-design">Solution design</a></h5>
+<h6><a href="#solution-design-diagram">Solution design diagram</a></h6>
+<h5><a href="#implementation-plan">Implementation plan</a></h6>
 
 <hr />
 
 <h4><a name="solution-design">Solution design</a></h4>
 
-After thorough analysis of the requirements and available <a href="https://docs.mulesoft.com/cloudhub-2/ch2-architecture#regions-and-dns-records">CloudHub regions</a>, the ACME Inc. <em>Center for Enablement (C4E)</em> has come up with the following Solution Design.
+<p>After thorough analysis of the requirements and available <a href="https://docs.mulesoft.com/cloudhub-2/ch2-architecture#regions-and-dns-records">CloudHub regions</a>, the ACME Inc. <em>Center for Enablement (C4E)</em> has come up with the following Solution Design.</p>
 
-<h5>Solution design diagram</h5>
+<h5><a name="solution-design-diagram">Solution design diagram</a></h5>
 
 <p>The diagram below shows the solution design and the components required for the implementation. Applications will (continue to) use the vanity domain <em>api.acme.com</em>, 
   whereby Route 53 will be configured to ensure geographical routing based on the application's location.</p> 
 <p><img src="/assets/images/f65c3d55-1-diagram.png" alt="Solution design diagram" /></p>
 
-<p>The C4E has also created an Action Plan, as described below.</p>
+<h4><a name="implementation-plan">Implementation plan</a></h4>
+
+<p>The C4E has also created an Implementation Plan, as described below.</p>
 
 <ol>
   <li>Create Private Spaces in Regions <em>eu-central-1 (deu-c1)</em> and <em>us-east-1 (usa-e1)</em></li>
@@ -41,6 +45,7 @@ After thorough analysis of the requirements and available <a href="https://docs.
   <li>Deploy <em>Orders API</em> to the three environments</li>
   <li>Configure AWS Route 53 with required DNS Records and geolocation policies</li>
 </ol>
+
 <p>Now let's get started with the implementation!</p>
 
 <h5>Create Private Spaces in Anypoint Platform</h5>
@@ -57,10 +62,11 @@ After thorough analysis of the requirements and available <a href="https://docs.
 <p>The creation of the Private Spaces runs in the background and will take approximately 30 minutes to complete.
 
 <h5>Check configuration AWS Route 53 Hosted Zone</h5>
-<p>AWS Route 53 uses the concept of Hosted Zones for the management of Top-Level Domains. ACME Inc. is already using AWS Route 53 for the management of their
-domain <em>acme.com</em>, so in this casethe team does not need to create a new Hosted Zone.</p>
+<p>AWS Route 53 uses <em>Hosted Zones</em> for the management of a Top-Level Domain (TLD). ACME Inc. is already using AWS Route 53 for the management of their
+domain <em>acme.com</em>, so in this case the team does not need to create a new Hosted Zone.</p>
 
-<p>You can follow the steps described <a>here</a> to create a Hosted Zone for your own domain. Please note that domain incurs fees which you will have to pay./p>
+<p>You can follow the steps described <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingHostedZone.html">here</a> to create a Hosted Zone for your own domain.
+   Please note that using services in AWS Route 53, e.g. domain registration, DNS queries etc. are subject to the corresponding fees, which you will have to pay for.</p>
 
 <h5>Create TLS Context</h5>
 <p>The C4E at ACME Inc. has already gathered the needed PEM-files from their networking team to configure the Private Space with a TLS Context 
@@ -75,10 +81,30 @@ domain <em>acme.com</em>, so in this casethe team does not need to create a new 
   After some sanity checks and test calls, all signs are green to go ahead with the global implementation.</p>
 
 <h5>Configure AWS Route 53</h5>
-<p>Now it's time to bring it all together. The C4E collaborates with the networking team to configure AWS Route 53. </p>
+<p>Now it's time to bring it all together. The C4E collaborates with the networking team to configure AWS Route 53.</p>
 
-<p>First,...</p>
-<p>The team ends up creating the following DNS records in AWS Route 53.</p>
+<p>First, the team gathers the required network configuration information for both of the Private Spaces, especially the <em>Public DNS Target</em>, which
+they will need to configure the DNS Records.</p>
+
+<p><img src="/assets/images/f65c3d55-2-private-space.png" alt="Private Space Network Configuration" /></p>
+
+
+<p>Then, the team creates a DNS Record in AWS Route 53 using the gathered information as depicted below.</p>
+
+<p><img src="/assets/images/f65c3d55-2-dns.png" alt="Private Space Network Configuration" /></p>
+
+<p>Record Name: api
+Record Type: CNAME
+Value: xxxx.deu-c1.cloudhub.io
+Routing Policy: Geolocation
+Location: Europe
+Record ID: 20230810-132419</p>
+
+<p><strong>Note:</strong> it can take up to 24 hours to propagate the DNS record to all global DNS servers. To check whether the DNS record is available, you can run </p>
+
+<p>Effectually, the DNS Record will ensure that a call to the domain <em>api.acme.com</em> will be routed to the actual CloudHub domain where the Orders API is running, <em>if</em> the call originates from an IP Address residing in Europe.</p>
+
+<p>Below provided an overview of all DNS records created to complete the implementation.</p>
 
 <table>
 <tbody>
