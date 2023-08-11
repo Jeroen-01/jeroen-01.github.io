@@ -2,7 +2,7 @@
 layout: post
 cover: 'assets/images/f65c3d55-cover-globe.jpg'
 navigation: True
-title: Managing Global API Deployments in CloudHub (Part 1)
+title: Managing Global API Deployments in CloudHub (Part 1 of 2)
 date: 2023-08-06 12:11:45
 tags: architecture
 subclass: 'post tag-test tag-content'
@@ -39,9 +39,65 @@ In Part 1 of this blog post series, we will walk through the prerequisites and f
 
 <p>We will use the following fictional company and fictional business requirements to guide us through the process. </p>
 
-<p>Since 2019, <strong>ACME Inc.</strong> is an avid user of the the MuleSoft Anypoint Platform for all their API, integration and API Management use cases. In June 2023, they started developing a new <em>Orders API</em>, which allows
-their customers to integrate their applications and processes directly with ACME Inc. to improve supply chain visibility. They are now looking to set up and expand the platform to allow them to
+<p>Since 2019, <strong>ACME Inc.</strong> is an avid user of the the MuleSoft Anypoint Platform for all their API, integration and API Management use cases. In June 2023, the <em>Center for Enablement (C4E)</em> started developing a new <em>Orders API</em>, 
+    based on the below API Sepcifcation, which allows
+their customers to integrate their applications with ACME Inc. to get and create orders directly, in turn improving their customer's processes. The team is now looking to set up and expand the platform to allow them to
 deploy the new API on a global scale.</p>
+
+<pre>
+    #%RAML 1.0
+title: Orders API
+
+/orders:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: object
+            properties:
+              id:
+                type: id
+              createdAt:
+                type: datetime
+                example: 2023-08-03T17:16:24Z
+              status:
+                type: status
+              items:
+                type: array
+                items:
+                  - orderLineItem
+              region:
+                type: string
+                enum:
+                  - deu-c1
+                  - usa-e1
+                  - au-s1
+                example: deu-c1
+
+types:
+  id:
+    type: string
+    example: 4a04dc1c-1cf7-4f45-8e52-e03967790192
+  status:
+    type: string
+    enum:
+      - transit
+      - delivered
+    example: transit
+  orderLineItem:
+    properties:
+      id:
+        type: id
+      productId:
+        type: id
+      description:
+        type: string
+        example: Basic Sneakers
+      price:
+        type: number
+        example: 22.99
+</pre>
 
 <p>ACME Inc. operates in three regions cq. countries:</p>
 
@@ -54,11 +110,11 @@ deploy the new API on a global scale.</p>
 <p>As Australia was the first country in which the Anypoint Platform was introduced, they are already actively using an Anypoint <em>Virtual Private Cloud (VPC)</em> and
 <em>Dedicated Load Balancer (DLB)</em> to deploy their applications in this region.  </p>
 
-<p>For the new to be added regions, i.e. North America and Europe, ACME Inc.'s API Architects are very interested in setting up Private Spaces rather than VPCs and DLBs due to the improved deployment and runtime performance,
+<p>For the new to be added regions, i.e. North America and Europe, ACME Inc.'s C4E is very interested in setting up Private Spaces rather than VPCs and DLBs due to the improved deployment and runtime performance,
 scalability, more fine-grained resource allocation, and overall setup simplification. Luckily, they have sufficient entitlements in their current subscription to set up 2 new Private Spaces. 
 However, there is <strong>no</strong> capacity to migrate the applications running in Australia to a Private Space, nor can they set up a separate Private Space for this region due to license availability.</p>
 
-<p>The <em>Order API</em> will need to be deployed as close to the operating regions defined above, and the consuming applications will need to be routed to the API instance that is closest to them, in order to 
+<p>The <em>Orders API</em> will need to be deployed as close to the operating regions defined above, and the consuming applications will need to be routed to the API instance that is closest to them, in order to 
 reduce geographical latency. Furthermore, ACME Inc. wants to continue using their vanity domain <em>https://api.acme.com</em>, which is already in use for the Australia region.</p> 
 
 <p>Now, it's up to us to come up with a solution design. Stay tuned for <a href="/f65c3d55-2.html">Part 2</a>!.</p>
