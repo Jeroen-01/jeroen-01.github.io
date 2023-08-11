@@ -31,8 +31,13 @@ In Part 2 of this blog post series, we will discuss the solution design and the 
 <h5><a name="solution-design-diagram">Solution design diagram</a></h5>
 
 <p>The diagram below shows the solution design and the components required for the implementation. Applications will (continue to) use the vanity domain <em>api.acme.com</em>, 
-  whereby Route 53 will be configured to ensure geographical routing based on the application's location.</p> 
+  whereby Route 53 will be configured to ensure geographical routing based on the application's location.</p>
+
+<hr />
+
 <p><img src="/assets/images/f65c3d55-1-diagram.png" alt="Solution design diagram" /></p>
+
+<hr />
 
 <h4><a name="implementation-plan">Implementation plan</a></h4>
 
@@ -80,8 +85,11 @@ domain <em>acme.com</em>, so in this case the team does not need to create a new
 While they are checking the configuration in <em>Runtime Manager > Load Balancers</em>, they make note of the DLB's domain, which they need to configure the DNS Records.
 </p>
 
+<hr />
+
 <p><img src="/assets/images/f65c3d55-2-dlb.png" alt="Dedicated Load Balancer domain" /></p>
 
+<hr />
 
 <h5>Deploy the <em>Orders API</em></h5>
 <p>The C4E goes ahead and deploys the <em>Orders API</em> to the 2 Private Spaces in Frankfurt and Northern Virginia and to the VPC in Australia, a major milestone! Since API Security is of course
@@ -97,18 +105,25 @@ While they are checking the configuration in <em>Runtime Manager > Load Balancer
 <p>First, the team gathers the required network configuration information for both of the Private Spaces, especially the <em>Public DNS Target</em>, which
 they will need to configure the DNS Records.</p>
 
+<hr />
+
 <p><img src="/assets/images/f65c3d55-2-private-space.png" alt="Private Space Network Configuration" /></p>
 
+<hr />
 
 <p>Then, the team creates a DNS Record in AWS Route 53 using the gathered information as depicted below.</p>
 
+<hr />
+
 <p><img src="/assets/images/f65c3d55-2-dns.png" alt="Private Space Network Configuration" /></p>
 
-<p>Record Name: api
-Record Type: CNAME
-Value: xxxx.deu-c1.cloudhub.io
-Routing Policy: Geolocation
-Location: Europe
+<hr />
+
+<p>Record Name: api<br>
+Record Type: CNAME<br>
+Value: xxxx.deu-c1.cloudhub.io<br>
+Routing Policy: Geolocation<br>
+Location: Europe<br>
 Record ID: 20230810-132419</p>
 
 <p><strong>Note:</strong> it can take up to 24 hours to propagate the DNS record to all global DNS servers.</p>
@@ -117,7 +132,7 @@ Record ID: 20230810-132419</p>
   and in turn, the A Records should correspond with the Inbound Static IPs.</p>
 
 <pre>
-  dig api.acme.com
+  user@laptop: ~ $ dig api.acme.com
   
   ; <<>> DiG 9.10.6 <<>> api.acme.com
   ;; global options: +cmd
@@ -140,6 +155,8 @@ Record ID: 20230810-132419</p>
 
 <p>The table below provides an overview of all DNS records created to complete the implementation. The team also added a CNAME Record with Geolocation <em>Default</em> to ensure that calls originating from a different continent or from an non-identifiable IP Address are routed to the Orders API running in North America. </p>
 
+<hr />
+    
 <table>
 <tbody>
 <tr>
@@ -174,6 +191,8 @@ Record ID: 20230810-132419</p>
 </tr>
 </tbody>
 </table>
+
+<hr />
 
 <h4><a name="conclusion">Conclusion</a></h4>
 
