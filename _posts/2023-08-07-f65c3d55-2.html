@@ -31,8 +31,14 @@ In Part 2 of this blog post series, we will discuss the solution design and the 
 <h5><a name="solution-design-diagram">Solution design diagram</a></h5>
 
 <p>The diagram below shows the solution design and the components required for the implementation. Applications will (continue to) use the vanity domain <em>api.acme.com</em>, 
-  whereby Route 53 will be configured to ensure geographical routing based on the application's location.</p> 
+  whereby Route 53 will be configured to ensure geographical routing based on the application's location.</p>
+
+<hr />
+
+<caption>Figure 1: Solution design diagram</caption>
 <p><img src="/assets/images/f65c3d55-1-diagram.png" alt="Solution design diagram" /></p>
+
+<hr />
 
 <h4><a name="implementation-plan">Implementation plan</a></h4>
 
@@ -80,8 +86,12 @@ domain <em>acme.com</em>, so in this case the team does not need to create a new
 While they are checking the configuration in <em>Runtime Manager > Load Balancers</em>, they make note of the DLB's domain, which they need to configure the DNS Records.
 </p>
 
+<hr />
+
+<caption>Figure 2: Dedicated Load Balancer configuration</caption>
 <p><img src="/assets/images/f65c3d55-2-dlb.png" alt="Dedicated Load Balancer domain" /></p>
 
+<hr />
 
 <h5>Deploy the <em>Orders API</em></h5>
 <p>The C4E goes ahead and deploys the <em>Orders API</em> to the 2 Private Spaces in Frankfurt and Northern Virginia and to the VPC in Australia, a major milestone! Since API Security is of course
@@ -97,18 +107,27 @@ While they are checking the configuration in <em>Runtime Manager > Load Balancer
 <p>First, the team gathers the required network configuration information for both of the Private Spaces, especially the <em>Public DNS Target</em>, which
 they will need to configure the DNS Records.</p>
 
-<p><img src="/assets/images/f65c3d55-2-private-space.png" alt="Private Space Network Configuration" /></p>
+<hr />
 
+<caption>Figure 3: Private Space configurationdiagram</caption>
+<p><img src="/assets/images/f65c3d55-2-private-space.png" alt="Private Space configuration" /></p>
+
+<hr />
 
 <p>Then, the team creates a DNS Record in AWS Route 53 using the gathered information as depicted below.</p>
 
-<p><img src="/assets/images/f65c3d55-2-dns.png" alt="Private Space Network Configuration" /></p>
+<hr />
 
-<p>Record Name: api
-Record Type: CNAME
-Value: xxxx.deu-c1.cloudhub.io
-Routing Policy: Geolocation
-Location: Europe
+<caption>Figure 4: DNS Record</caption>
+<p><img src="/assets/images/f65c3d55-2-dns.png" alt="DNS Record" /></p>
+
+<hr />
+
+<p>Record Name: api<br>
+Record Type: CNAME<br>
+Value: xxxx.deu-c1.cloudhub.io<br>
+Routing Policy: Geolocation<br>
+Location: Europe<br>
 Record ID: 20230810-132419</p>
 
 <p><strong>Note:</strong> it can take up to 24 hours to propagate the DNS record to all global DNS servers.</p>
@@ -117,7 +136,7 @@ Record ID: 20230810-132419</p>
   and in turn, the A Records should correspond with the Inbound Static IPs.</p>
 
 <pre>
-  dig api.acme.com
+  user@laptop: ~ $ dig api.acme.com
   
   ; <<>> DiG 9.10.6 <<>> api.acme.com
   ;; global options: +cmd
@@ -139,6 +158,10 @@ Record ID: 20230810-132419</p>
 <p>Basically, the DNS Record will ensure that a call to the domain <em>api.acme.com</em> will be routed to the CloudHub domain in Europe (Frankfurt) where the Orders API is running, <em>if</em> the call originates from an IP Address residing in Europe.</p>
 
 <p>The table below provides an overview of all DNS records created to complete the implementation. The team also added a CNAME Record with Geolocation <em>Default</em> to ensure that calls originating from a different continent or from an non-identifiable IP Address are routed to the Orders API running in North America. </p>
+
+<hr />
+
+<caption>Table 1: DNS Records</caption>
 
 <table>
 <tbody>
@@ -175,11 +198,21 @@ Record ID: 20230810-132419</p>
 </tbody>
 </table>
 
+<hr />
+
 <h4><a name="conclusion">Conclusion</a></h4>
 
 <p>The leadership team at ACME Inc. is very impressed and happy with the solution created by the C4E, and is confident it will be of great value to their customers.
 The C4E has successfully implemented a global and scalable solution, that ensures fast response times from any geographical location, in turn providing an excellent
-customer and developer experience.</p>
+customer and developer experience. Using <a href="https://geopeeker.com">Geopeeker</a>, the team double-checks the global response times and DNS resolution, and sees everything is working as intended.</p>
+
+<hr />
+    
+<caption>Figure 5: Global response times</caption>
+
+<p><img src="/assets/images/f65c3d55-2-geopeeker.png" alt="Geopeeker" /></p>
+
+<hr />
 
 <p>As soon as the implementation is completed, the team notices that the operating costs on AWS Route 53 continue to increase, so they do make one small change. They decide to adjust
 the <em>Time-to-Live (TTL)</em> of each CNAME Record to 86,400 seconds (or 1 day) to increase the cache period and reduce the number of queries made by clients against the DNS Service, in turn reducing operating costs.
