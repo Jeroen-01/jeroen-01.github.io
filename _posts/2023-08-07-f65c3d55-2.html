@@ -2,7 +2,7 @@
 layout: post
 cover: 'assets/images/f65c3d55-cover-globe.jpg'
 navigation: True
-title: Managing Global API Deployments in CloudHub (Part 2 of 2)
+title: Global API Deployments with CloudHub and AWS Route 53 (2/2)
 date: 2023-08-10 08:45:00
 tags: architecture
 subclass: 'post tag-test tag-content'
@@ -215,7 +215,8 @@ customer and developer experience. Using <a href="https://geopeeker.com">Geopeek
 the <em>Time-to-Live (TTL)</em> of each CNAME Record to 86,400 seconds (or 1 day) to increase the cache period and reduce the number of queries made by clients against the DNS Service, in turn reducing operating costs.
 It is indeed common practice to first configure the records with a short TTL, and increase it as soon as everything is configured as required.</p>
 
-<p>And there you have it: we have successfully created Private Spaces, globally deployed our Orders API and built an application network that can be reached by customers throughout the world!</p>
+<p>And there you have it: leveraging the Anypoint Platform, we are able to successfully create API runtimes in different regions, enabling us to globally deploy APIs on fully-managed and highly scalable infrastructure. Using AWS Route 53 we further our solution
+  by enabling global content delivery, and build an application network that can be reached by customers throughout the world!</p>
 
 
 
