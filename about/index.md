@@ -1,8 +1,9 @@
 ---
 layout: page
 title: About
+cover: odyssey-cover-about.jpg
 navigation: true
-logo: 'assets/images/ghost.png'
+logo: 'assets/images/odyssey-logo-clean.png'
 current: about
 ---
 
