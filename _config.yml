@@ -10,7 +10,7 @@ language: 'en-uk'
 name: 'The Integration Odyssey'
 description: "Journeying through APIs, data models, and seamless integrations"
 
-short_url: 'jeroen-01.github.io'
+url: 'https://blog.integration-odyssey.cc'
 google_analytics: UA-69281367-1
 disqus: username
 # edit baseurl to simply '/' if using as your personal page (instead of a project page)
