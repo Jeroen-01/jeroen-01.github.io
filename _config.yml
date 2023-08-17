@@ -7,7 +7,7 @@ paginate: 5
 language: 'en-uk'
 
 # Website info
-name: 'The Integration Odyssey'
+name: 'Integration Odyssey'
 description: "Journeying through APIs, data models, and seamless integrations"
 
 url: 'https://blog.integration-odyssey.cc'
