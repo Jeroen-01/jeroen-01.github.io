@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Integration Odyssey - Articles</title>
+    <description>Journeying through APIs, data models, and seamless integrations</description>
+    <link>
+    https://blog.integration-odyssey.cc</link>
+    
+      
+      <item>
+        <title>Global API Deployments with CloudHub and AWS Route 53 (Part 2 of 2)</title>
+        
+          <description>&lt;p&gt;Global organizations require global IT infrastructure to support their processes, and APIs are no exceptions to this requirement.
+In Part 2 of this blog post series, we will discuss the solution design and the implementation steps for the business requirements discussed in &lt;a href=&quot;/f65c3d55-1.html&quot;&gt;Part 1&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Thu, 10 Aug 2023 08:45:00 +0000</pubDate>
+        <link>
+        https://blog.integration-odyssey.cc/f65c3d55-2</link>
+        <guid isPermaLink="true">https://blog.integration-odyssey.cc/f65c3d55-2</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Global API Deployments with CloudHub and AWS Route 53 (Part 1 of 2)</title>
+        
+          <description>&lt;p&gt;Global organizations require global IT infrastructure to support their processes, and APIs are no exceptions to this requirement.
+In Part 1 of this blog post series, we will walk through the prerequisites and fictional business requirements of &lt;em&gt;ACME Inc.&lt;/em&gt; to frame our discussion.&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Sun, 06 Aug 2023 12:11:45 +0000</pubDate>
+        <link>
+        https://blog.integration-odyssey.cc/f65c3d55-1</link>
+        <guid isPermaLink="true">https://blog.integration-odyssey.cc/f65c3d55-1</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Featured - Global Load Balancing and Resilience for MuleSoft Private Spaces in CloudHub 2.0 utilizing Amazon Networking Services</title>
+        
+          <description>&lt;p&gt;Today we feature the post 
+  &lt;a href=&quot;https://medium.com/another-integration-blog/global-load-balancing-and-resilience-for-mulesoft-private-spaces-in-cloudhub-2-0-ce66ad588411&quot;&gt;Global Load Balancing and Resilience for MuleSoft Private Spaces in CloudHub 2.0 utilizing Amazon Networking Services&lt;/a&gt;
+by &lt;a href=&quot;https://medium.com/@mcdonnell-the-mule&quot;&gt;Michael McDonnell&lt;/a&gt;. In his post, Michael explains how to configure Global Disaster Recovery,
+leveraging the Anypoint Platform Private Spaces and AWS Route 53.&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Tue, 01 Aug 2023 08:45:00 +0000</pubDate>
+        <link>
+        https://blog.integration-odyssey.cc/63360bac</link>
+        <guid isPermaLink="true">https://blog.integration-odyssey.cc/63360bac</guid>
+      </item>
+      
+    
+  </channel>
+</rss>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Page Meta -->
+    <title>Global API Deployments with CloudHub and AWS Route 53 (Part 2 of 2)</title>
+    <meta name="description" content="Journeying through APIs, data models, and seamless integrations" />
+
+    <!-- Mobile Meta -->
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Brand icon -->
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" >
+
+    <!-- Styles'n'Scripts -->
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/syntax.css" />
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+
+    <!-- Ghost outputs important style and meta data with this tag -->
+        <link rel="canonical" href="https://blog.integration-odyssey.cc//f65c3d55-2" />
+    <meta name="referrer" content="origin" />
+    <link rel="next" href="/page2/" />
+
+    <meta property="og:site_name" content="Integration Odyssey" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Global API Deployments with CloudHub and AWS Route 53 (Part 2 of 2)" />
+    <meta property="og:description" content="Journeying through APIs, data models, and seamless integrations" />
+    <meta property="og:url" content="https://blog.integration-odyssey.cc//f65c3d55-2" />
+    <meta property="og:image" content="/assets/images/f65c3d55-cover-globe.jpg" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Global API Deployments with CloudHub and AWS Route 53 (Part 2 of 2)" />
+    <meta name="twitter:description" content="Journeying through APIs, data models, and seamless integrations" />
+    <meta name="twitter:url" content="https://blog.integration-odyssey.cc//f65c3d55-2" />
+    <meta name="twitter:image:src" content="/assets/images/f65c3d55-cover-globe.jpg" />
+
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Website",
+    "publisher": "Integration Odyssey",
+    "name": "Global API Deployments with CloudHub and AWS Route 53 (Part 2 of 2)",
+    "url": "https://blog.integration-odyssey.cc//f65c3d55-2",
+    "image": "/assets/images/f65c3d55-cover-globe.jpg",
+    "description": "Journeying through APIs, data models, and seamless integrations"
+}
+    </script>
+
+    <meta name="generator" content="Jekyll 3.0.0" />
+    <link rel="alternate" type="application/rss+xml" title="Integration Odyssey" href="/feed.xml" />
+
+
+</head>
+<body class="home-template nav-closed">
+
+    <!-- The blog navigation links -->
+    <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        <li class="nav-home " role="presentation"><a href="/">Home</a></li>
+        <li class="nav-about " role="presentation"><a href="/about">About</a></li>
+        <li class="nav-author " role="presentation"><a href="/author/jeroen">Jeroen Douma</a></li>
+    </ul>
+    <a class="subscribe-button icon-feed" href="/feed.xml">Subscribe</a>
+</div>
+<span class="nav-cover"></span>
+
+
+    <div class="site-wrapper">
+
+        <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
+        <!-- default -->
+
+<!-- The comment above "< default" means - insert everything in this file into -->
+    <!-- the [body] of the default.hbs template, which contains our header/footer. -->
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<header class="main-header post-head " style="background-image: url(/assets/images/f65c3d55-cover-globe.jpg) ">
+    <nav class="main-nav  overlay  clearfix">
+        <a class="blog-logo" href="/"><img src="/assets/images/odyssey-logo-clean.png" alt="Blog Logo" /></a>
+        
+            <a class="menu-button icon-menu" href="#"><span class="word">Menu</span></a>
+        
+    </nav>
+</header>
+
+<main class="content" role="main">
+
+    <article class="post tag-test tag-content">
+
+        <header class="post-header">
+            <h1 class="post-title">Global API Deployments with CloudHub and AWS Route 53 (Part 2 of 2)</h1>
+            <section class="post-meta">
+            <!-- <a href='/'></a> -->
+
+            
+                
+                    <a href='/author/jeroen'>Jeroen Douma</a>
+                
+            
+            <time class="post-date" datetime="2023-08-10">10 Aug 2023</time>
+                <!-- [[tags prefix=" on "]] -->
+                
+                on
+                
+                    
+                       <a href='/tag/architecture'>Architecture</a>
+                    
+                
+                
+            </section>
+        </header>
+
+        <section class="post-content">
+
+            <p>Global organizations require global IT infrastructure to support their processes, and APIs are no exceptions to this requirement.
+In Part 2 of this blog post series, we will discuss the solution design and the implementation steps for the business requirements discussed in <a href="/f65c3d55-1.html">Part 1</a>.</p>
+
+<hr />
+<h3>Table of Contents</h3>
+
+<h5><a href="#solution-design">Solution design</a></h5>
+<h6><a href="#solution-design-diagram">Solution design diagram</a></h6>
+<h5><a href="#implementation-plan">Implementation plan</a></h6>
+<h5><a href="#conclusion">Conclusion</a></h5>
+
+<hr />
+
+<h4><a name="solution-design">Solution design</a></h4>
+
+<p>After thorough analysis of the requirements and available <a href="https://docs.mulesoft.com/cloudhub-2/ch2-architecture#regions-and-dns-records">CloudHub regions</a>, the ACME Inc. <em>Center for Enablement (C4E)</em> has come up with the following Solution Design.</p>
+
+<h5><a name="solution-design-diagram">Solution design diagram</a></h5>
+
+<p>The diagram below shows the solution design and the components required for the implementation. Applications will (continue to) use the vanity domain <em>api.acme.com</em>, 
+  whereby Route 53 will be configured to ensure geographical routing based on the application's location.</p>
+
+<hr />
+
+<caption>Figure 1: Solution design diagram</caption>
+<p><img src="/assets/images/f65c3d55-1-diagram.png" alt="Solution design diagram" /></p>
+
+<hr />
+
+<h4><a name="implementation-plan">Implementation plan</a></h4>
+
+<p>The C4E has also created an Implementation Plan, as described below.</p>
+
+<ol>
+  <li>Create Private Spaces in Regions <em>eu-central-1 (deu-c1)</em> and <em>us-east-1 (usa-e1)</em></li>
+  <li>Check configuration of AWS Route 53 Hosted Zone</li>
+  <li>Create TLS Context</li>
+  <li>Check configuration of existing VPC and DLB in Region <em>ap-northeast-2 (au-s1)</em></li>
+  <li>Deploy <em>Orders API</em> to the three environments</li>
+  <li>Configure AWS Route 53 with required DNS Records and geolocation policies</li>
+</ol>
+
+<p>Now let's get started with the implementation!</p>
+
+<h5>Create Private Spaces in Anypoint Platform</h5>
+
+  <ol>
+    <li>Create a Private Space in Region <em>Europe (Frankfurt)</em> by following the steps described <a href="https://docs.mulesoft.com/cloudhub-2/ps-create-configure">here</a>.</li>
+
+    The team decides to name this Private Space <em>acme-priv-sp-deu-c1</em>.
+    <li>Create a Private Space in Region <em>US East (Northern Virginia)</em> following the same steps as above.</li>
+
+    The team decides to name this Private Space <em>acme-priv-sp-usa-e1</em>
+  </ol>
+
+<p>The creation of the Private Spaces runs in the background and will take approximately 30 minutes to complete.
+
+<h5>Check configuration AWS Route 53 Hosted Zone</h5>
+<p>AWS Route 53 uses <em>Hosted Zones</em> for the management of a Top-Level Domain (TLD). ACME Inc. is already using AWS Route 53 for the management of their
+domain <em>acme.com</em>, so in this case the team does not need to create a new Hosted Zone.</p>
+
+<p>You can follow the steps described <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingHostedZone.html">here</a> to create a Hosted Zone for your own domain.
+   Please note that using services in AWS Route 53, e.g. domain registration, DNS queries etc. are subject to the corresponding fees, which you will have to pay for.</p>
+
+<h5>Create TLS Context</h5>
+<p>The C4E at ACME Inc. has already gathered the needed PEM-files from their networking team to configure the Private Space with a TLS Context 
+  for <em>api.acme.com</em>. They configure both Private Spaces following the steps described <a href="https://docs.mulesoft.com/cloudhub-2/ps-config-domains#create-tls-context">here</a>.</p>
+
+<h5>Check configuration of existing VPC and DLB</h5>
+<p>The C4E has decided to deploy the Orders API with the application name <em>acme-inc-orders-api</em> in all environments. As this name is available and unique inside the VPC,
+  and the mapping rule inside the DLB has already been set up to forward API calls to the corresponding Mule App, no further changes are needed.
+
+While they are checking the configuration in <em>Runtime Manager > Load Balancers</em>, they make note of the DLB's domain, which they need to configure the DNS Records.
+</p>
+
+<hr />
+
+<caption>Figure 2: Dedicated Load Balancer configuration</caption>
+<p><img src="/assets/images/f65c3d55-2-dlb.png" alt="Dedicated Load Balancer domain" /></p>
+
+<hr />
+
+<h5>Deploy the <em>Orders API</em></h5>
+<p>The C4E goes ahead and deploys the <em>Orders API</em> to the 2 Private Spaces in Frankfurt and Northern Virginia and to the VPC in Australia, a major milestone! Since API Security is of course
+  highly important, they also created 3 APIs in API Manager and connected these to the Mule Apps using the <em>ApiId</em>, and implemented the Client ID enforcement policy. Lastly, they created an 
+  API Group in API Manager and bundled all 3 API instances in the group, so that one set of credentials can be used to access all global API instances. With this in place, they can
+  provide their customer with all the flexibility needed to call the API from any geographical location.</p> 
+
+<p>After some sanity checks and test calls, all signs are green to go ahead with the global implementation.</p>
+
+<h5>Configure AWS Route 53</h5>
+<p>Now it's time to bring it all together. The C4E collaborates with the networking team to configure AWS Route 53.</p>
+
+<p>First, the team gathers the required network configuration information for both of the Private Spaces, especially the <em>Public DNS Target</em>, to create
+the needed DNS Records.</p>
+
+<hr />
+
+<caption>Figure 3: Private Space configuration</caption>
+<p><img src="/assets/images/f65c3d55-2-private-space.png" alt="Private Space configuration" /></p>
+
+<hr />
+
+<caption>Figure 4: DNS Record</caption>
+<p><img src="/assets/images/f65c3d55-2-dns.png" alt="DNS Record" /></p>
+
+
+<p>Record Name: api<br>
+Record Type: CNAME<br>
+Value: xxxx.deu-c1.cloudhub.io<br>
+Routing Policy: Geolocation<br>
+Location: Europe<br>
+Record ID: 20230810-132419</p>
+
+<hr />
+
+<p><strong>Note:</strong> it can take up to 24 hours to propagate the DNS record to all global DNS servers.</p>
+
+<p>To check whether the DNS record is available, you can run the Terminal command as shown below. The CNAME record should point to the CloudHub Public DNS Target,
+  and in turn, the A Records should correspond with the Inbound Static IPs.</p>
+
+<pre>
+  user@laptop: ~ $ dig api.acme.com
+  
+  ; <<>> DiG 9.10.6 <<>> api.acme.com
+  ;; global options: +cmd
+  ;; Got answer:
+  ...
+
+  ;; ANSWER SECTION:
+  api.acme.com.	60	IN	CNAME	xxxx.deu-c1.cloudhub.io.
+  xxxx.deu-c1.cloudhub.io. 60	IN	A	10.0.0.1
+  xxxx.deu-c1.cloudhub.io. 60	IN	A	10.0.0.2
+  xxxx.deu-c1.cloudhub.io. 60	IN	A	10.0.0.3
+
+  ;; Query time: 83 msec
+  ;; SERVER: 100.1.2.3#53(100.1.2.3)
+  ;; WHEN: Thu Aug 10 16:36:45 CEST 2023
+  ;; MSG SIZE  rcvd: 133
+</pre>
+
+<p>Basically, the DNS Record will ensure that a call to the domain <em>api.acme.com</em> will be routed to the CloudHub domain in Europe (Frankfurt) where the Orders API is running, <em>if</em> the call originates from an IP Address residing in Europe.</p>
+
+<p>The table below provides an overview of all DNS records created to complete the implementation. The team also added a CNAME Record with Geolocation <em>Default</em> to ensure that calls originating from a different continent or from an non-identifiable IP Address are routed to the Orders API running in North America. </p>
+
+<hr />
+
+<caption>Table 1: DNS Records</caption>
+
+<table>
+<tbody>
+<tr>
+<th>Name</th>
+<th>Routing</th>
+<th>Differentiator</th>
+<th>Value</th>
+</tr>
+<tr class="even">
+<td>api.acme.com</td>
+<td>Geolocation</td>
+<td>Europe</td>
+<td>xxxx.deu-c1.cloudhub.io</td>
+</tr>
+<tr>
+<td>api.acme.com</td>
+<td>Geolocation</td>
+<td>North America</td>
+<td>xxxx-usa-e1.cloudhub.io</td>
+</tr>
+<tr>
+<td>api.acme.com</td>
+<td>Geolocation</td>
+<td>Oceania</td>
+<td>acme-inc-au-s1.lb.anypointdns.net</td>
+</tr>
+<tr>
+<td>api.acme.com</td>
+<td>Geolocation</td>
+<td>Default</td>
+<td>xxxx-usa-e1.cloudhub.io</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h4><a name="conclusion">Conclusion</a></h4>
+
+<p>The leadership team at ACME Inc. is very impressed and happy with the solution created by the C4E, and is confident it will be of great value to their customers.
+The C4E has successfully implemented a global and scalable solution, that ensures fast response times from any geographical location, in turn providing an excellent
+customer and developer experience. Using <a href="https://geopeeker.com">Geopeeker</a>, the team double-checks the global response times and DNS resolution, and sees everything is working as intended.</p>
+
+<hr />
+    
+<caption>Figure 5: Global response times</caption>
+
+<p><img src="/assets/images/f65c3d55-2-geopeeker.png" alt="Geopeeker" /></p>
+
+<hr />
+
+<p>As soon as the implementation is completed, the team notices that the operating costs on AWS Route 53 continue to increase, so they do make one small change. They decide to adjust
+the <em>Time-to-Live (TTL)</em> of each CNAME Record to 86,400 seconds (or 1 day) to increase the cache period and reduce the number of queries made by clients against the DNS Service, in turn reducing operating costs.
+It is indeed common practice to first configure the records with a short TTL, and increase it as soon as everything is configured as required.</p>
+
+<p>And there you have it: leveraging the Anypoint Platform, we are able to successfully create API runtimes in different regions, enabling us to globally deploy APIs on fully-managed and highly scalable infrastructure. Using AWS Route 53 we further extend our solution
+  by ensuring global content delivery, providing an application network that can be reached by customers throughout the world!</p>
+
+
+
+
+
+        </section>
+
+        <footer class="post-footer">
+
+            <!-- Everything inside the #author tags pulls data from the author -->
+            <!-- #author-->
+            
+                
+                    
+                        <figure class="author-image">
+                            <a class="img" href="/author/jeroen" style="background-image: url(/assets/images/jeroen.jpg)"><span class="hidden">jeroen's Picture</span></a>
+                        </figure>
+                    
+
+                    <section class="author">
+                        <h4><a href="/author/jeroen">Jeroen Douma</a></h4>
+
+                        
+                            <p> Solution Engineer focused on Manufacturing, Automotive and Production</p>
+                        
+                        <div class="author-meta">
+                            <span class="author-location icon-location"> Frankfurt am Main, Germany</span>
+                            <span class="author-link icon-link"><a href=""> https://jeroen-01.github.io</a></span>
+                        </div>
+                    </section>
+
+                    <!-- /author  -->
+
+                    <section class="share">
+                        <h4>Share this post</h4>
+                        <a class="icon-linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=/f65c3d55-2&amp;url=https://blog.integration-odyssey.ccf65c3d55-2"
+                            onclick="window.open(this.href, 'linkedin-share', 'width=550,height=235');return false;">
+                            <span class="hidden">LinkedIn</span>
+                        </a>
+                        <a class="icon-twitter" href="http://twitter.com/share?text=Global API Deployments with CloudHub and AWS Route 53 (Part 2 of 2)&amp;url=https://blog.integration-odyssey.ccf65c3d55-2"
+                            onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                            <span class="hidden">Twitter</span>
+                        </a>
+                        <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.integration-odyssey.ccf65c3d55-2"
+                            onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                            <span class="hidden">Facebook</span>
+                        </a>
+                    </section>
+
+                    <section class="disclaimer">
+                        <p>This blog provides general guidance and is not intended as official implementation documentation. 
+                            Readers are responsible for their own implementation and associated costs. 
+                            No guarantees are made regarding outcomes. The authors are not liable for any resulting damages. 
+                            Use at your own discretion.</p>
+                    </section>
+                
+            
+
+            <!-- Add Disqus Comments -->
+            
+
+        </footer>
+
+    </article>
+
+</main>
+
+<aside class="read-next">
+
+    <!-- [[! next_post ]] -->
+    
+    <!-- [[! /next_post ]] -->
+    <!-- [[! prev_post ]] -->
+    
+        <a class="read-next-story prev " style="background-image: url(/assets/images/f65c3d55-cover-globe.jpg)" href="/f65c3d55-1">
+            <section class="post">
+                <h2>Global API Deployments with CloudHub and AWS Route 53 (Part 1 of 2)</h2>
+                <p>Global organizations require global IT infrastructure to support their processes, and APIs are no exceptions...</p>
+            </section>
+        </a>
+    
+    <!-- [[! /prev_post ]] -->
+</aside>
+
+<!-- /post -->
+
+
+        <!-- The tiny footer at the very bottom -->
+        <footer class="site-footer clearfix">
+          <section class="copyright"><a href="/">Integration Odyssey</a> &copy; 2023</section>
+        </footer>
+    </div>
+    <!-- highlight.js -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- jQuery needs to come before `` so that jQuery can be used in code injection -->
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+    <!-- Ghost outputs important scripts and data with this tag -->
+    <!--  -->
+    <!-- Add Google Analytics  -->
+        <!-- Google Analytics Tracking code -->
+     <script>
+	    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	    ga('create', 'UA-69281367-1', 'auto');
+	    ga('send', 'pageview');
+
+     </script>
+    <!-- Fitvids makes video embeds responsive and awesome -->
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <!-- The main JavaScript file for Casper -->
+    <script type="text/javascript" src="/assets/js/index.js"></script>
+
+</body>
+</html>

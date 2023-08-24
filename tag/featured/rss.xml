@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+   
+      <title></title>
+   
+   <link>https://blog.integration-odyssey.cc</link>
+   <description>Journeying through APIs, data models, and seamless integrations</description>
+   <language>en-uk</language>
+   <managingEditor> </managingEditor>
+   <atom:link href="rss" rel="self" type="application/rss+xml" />
+   
+	<item>
+	  <title>Featured - Global Load Balancing and Resilience for MuleSoft Private Spaces in CloudHub 2.0 utilizing Amazon Networking Services</title>
+	  <link>//63360bac</link>
+	  <author></author>
+	  <pubDate>2023-08-01T08:45:00+00:00</pubDate>
+	  <guid>//63360bac</guid>
+	  <description><![CDATA[
+	     <p>Today we feature the post 
+  <a href="https://medium.com/another-integration-blog/global-load-balancing-and-resilience-for-mulesoft-private-spaces-in-cloudhub-2-0-ce66ad588411">Global Load Balancing and Resilience for MuleSoft Private Spaces in CloudHub 2.0 utilizing Amazon Networking Services</a>
+by <a href="https://medium.com/@mcdonnell-the-mule">Michael McDonnell</a>. In his post, Michael explains how to configure Global Disaster Recovery,
+leveraging the Anypoint Platform Private Spaces and AWS Route 53.</p>
+
+<p>Check it out, and make sure to follow Michael for more insightful posts on integration architecture and security!</p>
+
+	  ]]></description>
+	</item>
+
+
+</channel>
+</rss>

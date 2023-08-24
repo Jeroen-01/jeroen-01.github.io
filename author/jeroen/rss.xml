@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+   
+      <title></title>
+   
+   <link>https://blog.integration-odyssey.cc</link>
+   <description>Journeying through APIs, data models, and seamless integrations</description>
+   <language>en-uk</language>
+   <managingEditor> </managingEditor>
+   <atom:link href="rss" rel="self" type="application/rss+xml" />
+   
+	<item>
+	  <title>Global API Deployments with CloudHub and AWS Route 53 (Part 2 of 2)</title>
+	  <link>//f65c3d55-2</link>
+	  <author></author>
+	  <pubDate>2023-08-10T08:45:00+00:00</pubDate>
+	  <guid>//f65c3d55-2</guid>
+	  <description><![CDATA[
+	     <p>Global organizations require global IT infrastructure to support their processes, and APIs are no exceptions to this requirement.
+In Part 2 of this blog post series, we will discuss the solution design and the implementation steps for the business requirements discussed in <a href="/f65c3d55-1.html">Part 1</a>.</p>
+
+<hr />
+<h3>Table of Contents</h3>
+
+<h5><a href="#solution-design">Solution design</a></h5>
+<h6><a href="#solution-design-diagram">Solution design diagram</a></h6>
+<h5><a href="#implementation-plan">Implementation plan</a></h6>
+<h5><a href="#conclusion">Conclusion</a></h5>
+
+<hr />
+
+<h4><a name="solution-design">Solution design</a></h4>
+
+<p>After thorough analysis of the requirements and available <a href="https://docs.mulesoft.com/cloudhub-2/ch2-architecture#regions-and-dns-records">CloudHub regions</a>, the ACME Inc. <em>Center for Enablement (C4E)</em> has come up with the following Solution Design.</p>
+
+<h5><a name="solution-design-diagram">Solution design diagram</a></h5>
+
+<p>The diagram below shows the solution design and the components required for the implementation. Applications will (continue to) use the vanity domain <em>api.acme.com</em>, 
+  whereby Route 53 will be configured to ensure geographical routing based on the application's location.</p>
+
+<hr />
+
+<caption>Figure 1: Solution design diagram</caption>
+<p><img src="/assets/images/f65c3d55-1-diagram.png" alt="Solution design diagram" /></p>
+
+<hr />
+
+<h4><a name="implementation-plan">Implementation plan</a></h4>
+
+<p>The C4E has also created an Implementation Plan, as described below.</p>
+
+<ol>
+  <li>Create Private Spaces in Regions <em>eu-central-1 (deu-c1)</em> and <em>us-east-1 (usa-e1)</em></li>
+  <li>Check configuration of AWS Route 53 Hosted Zone</li>
+  <li>Create TLS Context</li>
+  <li>Check configuration of existing VPC and DLB in Region <em>ap-northeast-2 (au-s1)</em></li>
+  <li>Deploy <em>Orders API</em> to the three environments</li>
+  <li>Configure AWS Route 53 with required DNS Records and geolocation policies</li>
+</ol>
+
+<p>Now let's get started with the implementation!</p>
+
+<h5>Create Private Spaces in Anypoint Platform</h5>
+
+  <ol>
+    <li>Create a Private Space in Region <em>Europe (Frankfurt)</em> by following the steps described <a href="https://docs.mulesoft.com/cloudhub-2/ps-create-configure">here</a>.</li>
+
+    The team decides to name this Private Space <em>acme-priv-sp-deu-c1</em>.
+    <li>Create a Private Space in Region <em>US East (Northern Virginia)</em> following the same steps as above.</li>
+
+    The team decides to name this Private Space <em>acme-priv-sp-usa-e1</em>
+  </ol>
+
+<p>The creation of the Private Spaces runs in the background and will take approximately 30 minutes to complete.
+
+<h5>Check configuration AWS Route 53 Hosted Zone</h5>
+<p>AWS Route 53 uses <em>Hosted Zones</em> for the management of a Top-Level Domain (TLD). ACME Inc. is already using AWS Route 53 for the management of their
+domain <em>acme.com</em>, so in this case the team does not need to create a new Hosted Zone.</p>
+
+<p>You can follow the steps described <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingHostedZone.html">here</a> to create a Hosted Zone for your own domain.
+   Please note that using services in AWS Route 53, e.g. domain registration, DNS queries etc. are subject to the corresponding fees, which you will have to pay for.</p>
+
+<h5>Create TLS Context</h5>
+<p>The C4E at ACME Inc. has already gathered the needed PEM-files from their networking team to configure the Private Space with a TLS Context 
+  for <em>api.acme.com</em>. They configure both Private Spaces following the steps described <a href="https://docs.mulesoft.com/cloudhub-2/ps-config-domains#create-tls-context">here</a>.</p>
+
+<h5>Check configuration of existing VPC and DLB</h5>
+<p>The C4E has decided to deploy the Orders API with the application name <em>acme-inc-orders-api</em> in all environments. As this name is available and unique inside the VPC,
+  and the mapping rule inside the DLB has already been set up to forward API calls to the corresponding Mule App, no further changes are needed.
+
+While they are checking the configuration in <em>Runtime Manager > Load Balancers</em>, they make note of the DLB's domain, which they need to configure the DNS Records.
+</p>
+
+<hr />
+
+<caption>Figure 2: Dedicated Load Balancer configuration</caption>
+<p><img src="/assets/images/f65c3d55-2-dlb.png" alt="Dedicated Load Balancer domain" /></p>
+
+<hr />
+
+<h5>Deploy the <em>Orders API</em></h5>
+<p>The C4E goes ahead and deploys the <em>Orders API</em> to the 2 Private Spaces in Frankfurt and Northern Virginia and to the VPC in Australia, a major milestone! Since API Security is of course
+  highly important, they also created 3 APIs in API Manager and connected these to the Mule Apps using the <em>ApiId</em>, and implemented the Client ID enforcement policy. Lastly, they created an 
+  API Group in API Manager and bundled all 3 API instances in the group, so that one set of credentials can be used to access all global API instances. With this in place, they can
+  provide their customer with all the flexibility needed to call the API from any geographical location.</p> 
+
+<p>After some sanity checks and test calls, all signs are green to go ahead with the global implementation.</p>
+
+<h5>Configure AWS Route 53</h5>
+<p>Now it's time to bring it all together. The C4E collaborates with the networking team to configure AWS Route 53.</p>
+
+<p>First, the team gathers the required network configuration information for both of the Private Spaces, especially the <em>Public DNS Target</em>, to create
+the needed DNS Records.</p>
+
+<hr />
+
+<caption>Figure 3: Private Space configuration</caption>
+<p><img src="/assets/images/f65c3d55-2-private-space.png" alt="Private Space configuration" /></p>
+
+<hr />
+
+<caption>Figure 4: DNS Record</caption>
+<p><img src="/assets/images/f65c3d55-2-dns.png" alt="DNS Record" /></p>
+
+
+<p>Record Name: api<br>
+Record Type: CNAME<br>
+Value: xxxx.deu-c1.cloudhub.io<br>
+Routing Policy: Geolocation<br>
+Location: Europe<br>
+Record ID: 20230810-132419</p>
+
+<hr />
+
+<p><strong>Note:</strong> it can take up to 24 hours to propagate the DNS record to all global DNS servers.</p>
+
+<p>To check whether the DNS record is available, you can run the Terminal command as shown below. The CNAME record should point to the CloudHub Public DNS Target,
+  and in turn, the A Records should correspond with the Inbound Static IPs.</p>
+
+<pre>
+  user@laptop: ~ $ dig api.acme.com
+  
+  ; <<>> DiG 9.10.6 <<>> api.acme.com
+  ;; global options: +cmd
+  ;; Got answer:
+  ...
+
+  ;; ANSWER SECTION:
+  api.acme.com.	60	IN	CNAME	xxxx.deu-c1.cloudhub.io.
+  xxxx.deu-c1.cloudhub.io. 60	IN	A	10.0.0.1
+  xxxx.deu-c1.cloudhub.io. 60	IN	A	10.0.0.2
+  xxxx.deu-c1.cloudhub.io. 60	IN	A	10.0.0.3
+
+  ;; Query time: 83 msec
+  ;; SERVER: 100.1.2.3#53(100.1.2.3)
+  ;; WHEN: Thu Aug 10 16:36:45 CEST 2023
+  ;; MSG SIZE  rcvd: 133
+</pre>
+
+<p>Basically, the DNS Record will ensure that a call to the domain <em>api.acme.com</em> will be routed to the CloudHub domain in Europe (Frankfurt) where the Orders API is running, <em>if</em> the call originates from an IP Address residing in Europe.</p>
+
+<p>The table below provides an overview of all DNS records created to complete the implementation. The team also added a CNAME Record with Geolocation <em>Default</em> to ensure that calls originating from a different continent or from an non-identifiable IP Address are routed to the Orders API running in North America. </p>
+
+<hr />
+
+<caption>Table 1: DNS Records</caption>
+
+<table>
+<tbody>
+<tr>
+<th>Name</th>
+<th>Routing</th>
+<th>Differentiator</th>
+<th>Value</th>
+</tr>
+<tr class="even">
+<td>api.acme.com</td>
+<td>Geolocation</td>
+<td>Europe</td>
+<td>xxxx.deu-c1.cloudhub.io</td>
+</tr>
+<tr>
+<td>api.acme.com</td>
+<td>Geolocation</td>
+<td>North America</td>
+<td>xxxx-usa-e1.cloudhub.io</td>
+</tr>
+<tr>
+<td>api.acme.com</td>
+<td>Geolocation</td>
+<td>Oceania</td>
+<td>acme-inc-au-s1.lb.anypointdns.net</td>
+</tr>
+<tr>
+<td>api.acme.com</td>
+<td>Geolocation</td>
+<td>Default</td>
+<td>xxxx-usa-e1.cloudhub.io</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h4><a name="conclusion">Conclusion</a></h4>
+
+<p>The leadership team at ACME Inc. is very impressed and happy with the solution created by the C4E, and is confident it will be of great value to their customers.
+The C4E has successfully implemented a global and scalable solution, that ensures fast response times from any geographical location, in turn providing an excellent
+customer and developer experience. Using <a href="https://geopeeker.com">Geopeeker</a>, the team double-checks the global response times and DNS resolution, and sees everything is working as intended.</p>
+
+<hr />
+    
+<caption>Figure 5: Global response times</caption>
+
+<p><img src="/assets/images/f65c3d55-2-geopeeker.png" alt="Geopeeker" /></p>
+
+<hr />
+
+<p>As soon as the implementation is completed, the team notices that the operating costs on AWS Route 53 continue to increase, so they do make one small change. They decide to adjust
+the <em>Time-to-Live (TTL)</em> of each CNAME Record to 86,400 seconds (or 1 day) to increase the cache period and reduce the number of queries made by clients against the DNS Service, in turn reducing operating costs.
+It is indeed common practice to first configure the records with a short TTL, and increase it as soon as everything is configured as required.</p>
+
+<p>And there you have it: leveraging the Anypoint Platform, we are able to successfully create API runtimes in different regions, enabling us to globally deploy APIs on fully-managed and highly scalable infrastructure. Using AWS Route 53 we further extend our solution
+  by ensuring global content delivery, providing an application network that can be reached by customers throughout the world!</p>
+
+
+
+
+	  ]]></description>
+	</item>
+
+	<item>
+	  <title>Global API Deployments with CloudHub and AWS Route 53 (Part 1 of 2)</title>
+	  <link>//f65c3d55-1</link>
+	  <author></author>
+	  <pubDate>2023-08-06T12:11:45+00:00</pubDate>
+	  <guid>//f65c3d55-1</guid>
+	  <description><![CDATA[
+	     <p>Global organizations require global IT infrastructure to support their processes, and APIs are no exceptions to this requirement.
+In Part 1 of this blog post series, we will walk through the prerequisites and fictional business requirements of <em>ACME Inc.</em> to frame our discussion.</p>
+
+<hr />
+
+<h3>Table of Contents</h3>
+
+<h5><a href="#prerequisites">Prerequisites</a></h5>
+<h5><a href="#business-requirements">Business requirements</a></h5>
+
+<hr />
+
+<h4><a name="prerequisites">Prerequisites</a></h4>
+
+    <ul>
+        <li>MuleSoft Anypoint Platform</li>
+
+        You can request a free trial account by clicking <a href="https://anypoint.mulesoft.com/login/signup?apintent=generic">here</a>.  
+        Make sure to use a fictional username, for example including today's date, to ensure there are no clashes with existing or future usernames.
+        <li>AWS Account with an AWS Route 53 Hosted Zone</li>
+
+        Throughout the series, we will reference to the vanity domain <em>api.acme.com</em>. If you want to recreate the steps below, you will also have to create a Hosted Zone with your own domain.
+    </ul>
+
+<h4><a name="business-requirements">Business requirements</a></h4>
+
+<p>We will use the following fictional company and fictional business requirements to guide us through the process. </p>
+
+<p>Since 2019, <strong>ACME Inc.</strong> is an avid user of the the MuleSoft Anypoint Platform for all their API, integration and API Management use cases. In June 2023, the <em>Center for Enablement (C4E)</em> started developing a new <em>Orders API</em>, 
+    based on the below API Sepcifcation, which allows
+their customers to integrate their applications with ACME Inc. to get and create orders directly, in turn improving their customer's processes. The team is now looking to set up and expand the platform to allow them to
+deploy the new API on a global scale.</p>
+
+<pre>
+    #%RAML 1.0
+title: Orders API
+
+/orders:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: object
+            properties:
+              id:
+                type: id
+              createdAt:
+                type: datetime
+                example: 2023-08-03T17:16:24Z
+              status:
+                type: status
+              items:
+                type: array
+                items:
+                  - orderLineItem
+              region:
+                type: string
+                enum:
+                  - deu-c1
+                  - usa-e1
+                  - au-s1
+                example: deu-c1
+
+types:
+  id:
+    type: string
+    example: 4a04dc1c-1cf7-4f45-8e52-e03967790192
+  status:
+    type: string
+    enum:
+      - transit
+      - delivered
+    example: transit
+  orderLineItem:
+    properties:
+      id:
+        type: id
+      productId:
+        type: id
+      description:
+        type: string
+        example: Basic Sneakers
+      price:
+        type: number
+        example: 22.99
+</pre>
+
+<p>ACME Inc. operates in three regions cq. countries:</p>
+
+    <ul>
+        <li>Oceania: Australia</li>
+        <li>North America: Virginia</li>
+        <li>Europe: Germany</li>
+    </ul>
+
+<p>As Australia was the first country in which the Anypoint Platform was introduced, they are already actively using an Anypoint <em>Virtual Private Cloud (VPC)</em> and
+<em>Dedicated Load Balancer (DLB)</em> to deploy their applications in this region.  </p>
+
+<p>For the new to be added regions, i.e. North America and Europe, ACME Inc.'s C4E is very interested in setting up Private Spaces rather than VPCs and DLBs due to the improved deployment and runtime performance,
+scalability, more fine-grained resource allocation, and overall setup simplification. Luckily, they have sufficient entitlements in their current subscription to set up 2 new Private Spaces. 
+However, there is <strong>no</strong> capacity to migrate the applications running in Australia to a Private Space, nor can they set up a separate Private Space for this region due to license availability.</p>
+
+<p>The <em>Orders API</em> will need to be deployed as close to the operating regions defined above, and the consuming applications will need to be routed to the API instance that is closest to them, in order to 
+reduce geographical latency. Furthermore, ACME Inc. wants to continue using their vanity domain <em>https://api.acme.com</em>, which is already in use for the Australia region.</p> 
+
+<p>Now, it's up to us to come up with a solution design. Stay tuned for <a href="/f65c3d55-2.html">Part 2</a>!</p>
+
+
+	  ]]></description>
+	</item>
+
+	<item>
+	  <title>Featured - Global Load Balancing and Resilience for MuleSoft Private Spaces in CloudHub 2.0 utilizing Amazon Networking Services</title>
+	  <link>//63360bac</link>
+	  <author></author>
+	  <pubDate>2023-08-01T08:45:00+00:00</pubDate>
+	  <guid>//63360bac</guid>
+	  <description><![CDATA[
+	     <p>Today we feature the post 
+  <a href="https://medium.com/another-integration-blog/global-load-balancing-and-resilience-for-mulesoft-private-spaces-in-cloudhub-2-0-ce66ad588411">Global Load Balancing and Resilience for MuleSoft Private Spaces in CloudHub 2.0 utilizing Amazon Networking Services</a>
+by <a href="https://medium.com/@mcdonnell-the-mule">Michael McDonnell</a>. In his post, Michael explains how to configure Global Disaster Recovery,
+leveraging the Anypoint Platform Private Spaces and AWS Route 53.</p>
+
+<p>Check it out, and make sure to follow Michael for more insightful posts on integration architecture and security!</p>
+
+	  ]]></description>
+	</item>
+
+
+</channel>
+</rss>

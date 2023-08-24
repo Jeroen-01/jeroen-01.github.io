@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Document Settings -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Page Meta -->
+    <title>Global API Deployments with CloudHub and AWS Route 53 (Part 1 of 2)</title>
+    <meta name="description" content="Journeying through APIs, data models, and seamless integrations" />
+
+    <!-- Mobile Meta -->
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Brand icon -->
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" >
+
+    <!-- Styles'n'Scripts -->
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/syntax.css" />
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css">
+    <style>.hljs { background: none; }</style>
+
+    <!-- Ghost outputs important style and meta data with this tag -->
+        <link rel="canonical" href="https://blog.integration-odyssey.cc//f65c3d55-1" />
+    <meta name="referrer" content="origin" />
+    <link rel="next" href="/page2/" />
+
+    <meta property="og:site_name" content="Integration Odyssey" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Global API Deployments with CloudHub and AWS Route 53 (Part 1 of 2)" />
+    <meta property="og:description" content="Journeying through APIs, data models, and seamless integrations" />
+    <meta property="og:url" content="https://blog.integration-odyssey.cc//f65c3d55-1" />
+    <meta property="og:image" content="/assets/images/f65c3d55-cover-globe.jpg" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Global API Deployments with CloudHub and AWS Route 53 (Part 1 of 2)" />
+    <meta name="twitter:description" content="Journeying through APIs, data models, and seamless integrations" />
+    <meta name="twitter:url" content="https://blog.integration-odyssey.cc//f65c3d55-1" />
+    <meta name="twitter:image:src" content="/assets/images/f65c3d55-cover-globe.jpg" />
+
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Website",
+    "publisher": "Integration Odyssey",
+    "name": "Global API Deployments with CloudHub and AWS Route 53 (Part 1 of 2)",
+    "url": "https://blog.integration-odyssey.cc//f65c3d55-1",
+    "image": "/assets/images/f65c3d55-cover-globe.jpg",
+    "description": "Journeying through APIs, data models, and seamless integrations"
+}
+    </script>
+
+    <meta name="generator" content="Jekyll 3.0.0" />
+    <link rel="alternate" type="application/rss+xml" title="Integration Odyssey" href="/feed.xml" />
+
+
+</head>
+<body class="home-template nav-closed">
+
+    <!-- The blog navigation links -->
+    <div class="nav">
+    <h3 class="nav-title">Menu</h3>
+    <a href="#" class="nav-close">
+        <span class="hidden">Close</span>
+    </a>
+    <ul>
+        <li class="nav-home " role="presentation"><a href="/">Home</a></li>
+        <li class="nav-about " role="presentation"><a href="/about">About</a></li>
+        <li class="nav-author " role="presentation"><a href="/author/jeroen">Jeroen Douma</a></li>
+    </ul>
+    <a class="subscribe-button icon-feed" href="/feed.xml">Subscribe</a>
+</div>
+<span class="nav-cover"></span>
+
+
+    <div class="site-wrapper">
+
+        <!-- All the main content gets inserted here, index.hbs, post.hbs, etc -->
+        <!-- default -->
+
+<!-- The comment above "< default" means - insert everything in this file into -->
+    <!-- the [body] of the default.hbs template, which contains our header/footer. -->
+
+<!-- Everything inside the #post tags pulls data from the post -->
+<!-- #post -->
+
+<header class="main-header post-head " style="background-image: url(/assets/images/f65c3d55-cover-globe.jpg) ">
+    <nav class="main-nav  overlay  clearfix">
+        <a class="blog-logo" href="/"><img src="/assets/images/odyssey-logo-clean.png" alt="Blog Logo" /></a>
+        
+            <a class="menu-button icon-menu" href="#"><span class="word">Menu</span></a>
+        
+    </nav>
+</header>
+
+<main class="content" role="main">
+
+    <article class="post tag-test tag-content">
+
+        <header class="post-header">
+            <h1 class="post-title">Global API Deployments with CloudHub and AWS Route 53 (Part 1 of 2)</h1>
+            <section class="post-meta">
+            <!-- <a href='/'></a> -->
+
+            
+                
+                    <a href='/author/jeroen'>Jeroen Douma</a>
+                
+            
+            <time class="post-date" datetime="2023-08-06">06 Aug 2023</time>
+                <!-- [[tags prefix=" on "]] -->
+                
+                on
+                
+                    
+                       <a href='/tag/architecture'>Architecture</a>
+                    
+                
+                
+            </section>
+        </header>
+
+        <section class="post-content">
+
+            <p>Global organizations require global IT infrastructure to support their processes, and APIs are no exceptions to this requirement.
+In Part 1 of this blog post series, we will walk through the prerequisites and fictional business requirements of <em>ACME Inc.</em> to frame our discussion.</p>
+
+<hr />
+
+<h3>Table of Contents</h3>
+
+<h5><a href="#prerequisites">Prerequisites</a></h5>
+<h5><a href="#business-requirements">Business requirements</a></h5>
+
+<hr />
+
+<h4><a name="prerequisites">Prerequisites</a></h4>
+
+    <ul>
+        <li>MuleSoft Anypoint Platform</li>
+
+        You can request a free trial account by clicking <a href="https://anypoint.mulesoft.com/login/signup?apintent=generic">here</a>.  
+        Make sure to use a fictional username, for example including today's date, to ensure there are no clashes with existing or future usernames.
+        <li>AWS Account with an AWS Route 53 Hosted Zone</li>
+
+        Throughout the series, we will reference to the vanity domain <em>api.acme.com</em>. If you want to recreate the steps below, you will also have to create a Hosted Zone with your own domain.
+    </ul>
+
+<h4><a name="business-requirements">Business requirements</a></h4>
+
+<p>We will use the following fictional company and fictional business requirements to guide us through the process. </p>
+
+<p>Since 2019, <strong>ACME Inc.</strong> is an avid user of the the MuleSoft Anypoint Platform for all their API, integration and API Management use cases. In June 2023, the <em>Center for Enablement (C4E)</em> started developing a new <em>Orders API</em>, 
+    based on the below API Sepcifcation, which allows
+their customers to integrate their applications with ACME Inc. to get and create orders directly, in turn improving their customer's processes. The team is now looking to set up and expand the platform to allow them to
+deploy the new API on a global scale.</p>
+
+<pre>
+    #%RAML 1.0
+title: Orders API
+
+/orders:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            type: object
+            properties:
+              id:
+                type: id
+              createdAt:
+                type: datetime
+                example: 2023-08-03T17:16:24Z
+              status:
+                type: status
+              items:
+                type: array
+                items:
+                  - orderLineItem
+              region:
+                type: string
+                enum:
+                  - deu-c1
+                  - usa-e1
+                  - au-s1
+                example: deu-c1
+
+types:
+  id:
+    type: string
+    example: 4a04dc1c-1cf7-4f45-8e52-e03967790192
+  status:
+    type: string
+    enum:
+      - transit
+      - delivered
+    example: transit
+  orderLineItem:
+    properties:
+      id:
+        type: id
+      productId:
+        type: id
+      description:
+        type: string
+        example: Basic Sneakers
+      price:
+        type: number
+        example: 22.99
+</pre>
+
+<p>ACME Inc. operates in three regions cq. countries:</p>
+
+    <ul>
+        <li>Oceania: Australia</li>
+        <li>North America: Virginia</li>
+        <li>Europe: Germany</li>
+    </ul>
+
+<p>As Australia was the first country in which the Anypoint Platform was introduced, they are already actively using an Anypoint <em>Virtual Private Cloud (VPC)</em> and
+<em>Dedicated Load Balancer (DLB)</em> to deploy their applications in this region.  </p>
+
+<p>For the new to be added regions, i.e. North America and Europe, ACME Inc.'s C4E is very interested in setting up Private Spaces rather than VPCs and DLBs due to the improved deployment and runtime performance,
+scalability, more fine-grained resource allocation, and overall setup simplification. Luckily, they have sufficient entitlements in their current subscription to set up 2 new Private Spaces. 
+However, there is <strong>no</strong> capacity to migrate the applications running in Australia to a Private Space, nor can they set up a separate Private Space for this region due to license availability.</p>
+
+<p>The <em>Orders API</em> will need to be deployed as close to the operating regions defined above, and the consuming applications will need to be routed to the API instance that is closest to them, in order to 
+reduce geographical latency. Furthermore, ACME Inc. wants to continue using their vanity domain <em>https://api.acme.com</em>, which is already in use for the Australia region.</p> 
+
+<p>Now, it's up to us to come up with a solution design. Stay tuned for <a href="/f65c3d55-2.html">Part 2</a>!</p>
+
+
+
+        </section>
+
+        <footer class="post-footer">
+
+            <!-- Everything inside the #author tags pulls data from the author -->
+            <!-- #author-->
+            
+                
+                    
+                        <figure class="author-image">
+                            <a class="img" href="/author/jeroen" style="background-image: url(/assets/images/jeroen.jpg)"><span class="hidden">jeroen's Picture</span></a>
+                        </figure>
+                    
+
+                    <section class="author">
+                        <h4><a href="/author/jeroen">Jeroen Douma</a></h4>
+
+                        
+                            <p> Solution Engineer focused on Manufacturing, Automotive and Production</p>
+                        
+                        <div class="author-meta">
+                            <span class="author-location icon-location"> Frankfurt am Main, Germany</span>
+                            <span class="author-link icon-link"><a href=""> https://jeroen-01.github.io</a></span>
+                        </div>
+                    </section>
+
+                    <!-- /author  -->
+
+                    <section class="share">
+                        <h4>Share this post</h4>
+                        <a class="icon-linkedin" href="https://www.linkedin.com/sharing/share-offsite/?url=/f65c3d55-1&amp;url=https://blog.integration-odyssey.ccf65c3d55-1"
+                            onclick="window.open(this.href, 'linkedin-share', 'width=550,height=235');return false;">
+                            <span class="hidden">LinkedIn</span>
+                        </a>
+                        <a class="icon-twitter" href="http://twitter.com/share?text=Global API Deployments with CloudHub and AWS Route 53 (Part 1 of 2)&amp;url=https://blog.integration-odyssey.ccf65c3d55-1"
+                            onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                            <span class="hidden">Twitter</span>
+                        </a>
+                        <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.integration-odyssey.ccf65c3d55-1"
+                            onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                            <span class="hidden">Facebook</span>
+                        </a>
+                    </section>
+
+                    <section class="disclaimer">
+                        <p>This blog provides general guidance and is not intended as official implementation documentation. 
+                            Readers are responsible for their own implementation and associated costs. 
+                            No guarantees are made regarding outcomes. The authors are not liable for any resulting damages. 
+                            Use at your own discretion.</p>
+                    </section>
+                
+            
+
+            <!-- Add Disqus Comments -->
+            
+
+        </footer>
+
+    </article>
+
+</main>
+
+<aside class="read-next">
+
+    <!-- [[! next_post ]] -->
+    
+        <a class="read-next-story " style="background-image: url(/assets/images/f65c3d55-cover-globe.jpg)" href="/f65c3d55-2">
+            <section class="post">
+                <h2>Global API Deployments with CloudHub and AWS Route 53 (Part 2 of 2)</h2>
+                <p>Global organizations require global IT infrastructure to support their processes, and APIs are no exceptions...</p>
+            </section>
+        </a>
+    
+    <!-- [[! /next_post ]] -->
+    <!-- [[! prev_post ]] -->
+    
+        <a class="read-next-story prev " style="background-image: url(/assets/images/cover7.jpg)" href="/63360bac">
+            <section class="post">
+                <h2>Featured - Global Load Balancing and Resilience for MuleSoft Private Spaces in CloudHub 2.0 utilizing Amazon Networking Services</h2>
+                <p>Today we feature the post Global Load Balancing and Resilience for MuleSoft Private Spaces in...</p>
+            </section>
+        </a>
+    
+    <!-- [[! /prev_post ]] -->
+</aside>
+
+<!-- /post -->
+
+
+        <!-- The tiny footer at the very bottom -->
+        <footer class="site-footer clearfix">
+          <section class="copyright"><a href="/">Integration Odyssey</a> &copy; 2023</section>
+        </footer>
+    </div>
+    <!-- highlight.js -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <!-- jQuery needs to come before `` so that jQuery can be used in code injection -->
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+    <!-- Ghost outputs important scripts and data with this tag -->
+    <!--  -->
+    <!-- Add Google Analytics  -->
+        <!-- Google Analytics Tracking code -->
+     <script>
+	    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	    ga('create', 'UA-69281367-1', 'auto');
+	    ga('send', 'pageview');
+
+     </script>
+    <!-- Fitvids makes video embeds responsive and awesome -->
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <!-- The main JavaScript file for Casper -->
+    <script type="text/javascript" src="/assets/js/index.js"></script>
+
+</body>
+</html>
