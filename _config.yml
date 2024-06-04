@@ -48,8 +48,8 @@ lsi: false
 username: jeroen
 repo: jeroen-01
 branch: master
-relative_source: ../
-destination: ../
+# relative_source: ../
+# destination: ../
 production_url:  https://jeroen-01.github.io/jasper/
 source_url:  https://github.com/jekyllt/jasper/
 
